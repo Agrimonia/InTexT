@@ -1,0 +1,23 @@
+{
+  "name": "intext",
+  "version": "1.0.0",
+  "description": "Intelligent Text Editor by JoTang",
+  "main": "src/main.js",
+  "author": "Agrimonia",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "dependencies": {
+    "react": "^16.6.1",
+    "react-dom": "^16.6.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "parcel-bundler": "^1.10.3"
+  }
+}
