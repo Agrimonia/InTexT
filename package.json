@@ -6,12 +6,17 @@
   "author": "Agrimonia",
   "license": "MIT",
   "private": true,
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
   "scripts": {
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html"
   },
   "dependencies": {
-    "draft-js": "^0.10.5",
+    "draft-js": "^0.105",
     "react": "^16.6.1",
     "react-dom": "^16.6.1"
   },
@@ -19,7 +24,10 @@
     "babel-core": "^6.26.3",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
+    "husky": "^1.1.3",
     "node-sass": "^4.10.0",
-    "parcel-bundler": "^1.10.3"
+    "parcel-bundler": "^1.10.3",
+    "prettier": "1.15.1",
+    "pretty-quick": "^1.8.0"
   }
 }
