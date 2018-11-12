@@ -1,8 +1,8 @@
 import ReactDOM from "react-dom";
 import React from "react";
 
-const App = () => <div>hello world</div>;
+import DraftEditor from "./editor.jsx";
 
 const HTMLContainer = document.getElementById("container");
 
-ReactDOM.render(<App />, HTMLContainer);
+ReactDOM.render(<DraftEditor />, HTMLContainer);
