@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "antd": "^3.10.7",
+    "axios": "^0.18.0",
     "draft-js": "^0.10.5",
     "languagetool-api": "^1.1.2",
     "react": "^16.6.1",
