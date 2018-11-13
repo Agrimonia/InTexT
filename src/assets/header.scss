@@ -4,15 +4,13 @@
   margin: 1rem;
 
   .header-button-left {
-    .export-button {
-      i {
-        svg {
-          width: 1rem;
-          height: 1rem;
-        }
-      }
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
     }
     button {
+      width: 3rem;
+      height: 3rem;
       border: none;
       margin-right: 1rem;
     }
@@ -21,6 +19,7 @@
   .header-button-right {
     margin-right: 4rem;
     button {
+      margin-top: 0.5rem;
       border-radius: 0.6rem;
     }
   }

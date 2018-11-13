@@ -10,11 +10,14 @@ import Header from "../components/header";
 
 import "../assets/editor.scss";
 
-export default class DraftEditor extends React.Component {
+export default class EditorPage extends React.Component {
   constructor() {
     super();
-    this.state = {};
-
+    this.state = {
+      title: "Hello World"
+    };
+    this.titleRef = React.createRef();
+    this.contentRef = React.createRef();
     this.focus = e => this.refs.editor.focus();
     const content = window.localStorage.getItem("content");
 
@@ -26,13 +29,16 @@ export default class DraftEditor extends React.Component {
       this.state.editorState = EditorState.createEmpty();
     }
   }
-
+  componentDidMount() {
+    // this.titleRef.focus()
+  }
   onChange = editorState => {
     const contentState = editorState.getCurrentContent();
     this.saveContent(contentState);
     this.setState({
       editorState
     });
+    console.log(this.getTextArrayFromEditor());
   };
 
   getTextArrayFromEditor = () => {
@@ -43,6 +49,20 @@ export default class DraftEditor extends React.Component {
         return o.text;
       });
     return textArray;
+  };
+
+  // Title
+  handleTitleChange = e => {
+    this.setState({ title: e.target.value });
+  };
+
+  handleTitleKeyCommand = command => {
+    if (command.keyCode == 13) {
+      // Enter: 13
+      const content = this.contentRef.current;
+      console.log(content);
+      content.focus();
+    }
   };
 
   handleKeyCommand = command => {
@@ -70,11 +90,26 @@ export default class DraftEditor extends React.Component {
     return (
       <div>
         <Header />
-        <Editor
-          editorState={this.state.editorState}
-          handleKeyCommand={this.handleKeyCommand}
-          onChange={this.onChange}
-        />
+        <div className="editor-area">
+          <div className="editor-content">
+            <div className="editor-title-box">
+              <input
+                ref={this.titleRef}
+                className="editor-title"
+                value={this.state.title}
+                placeholder="无标题"
+                onChange={this.handleTitleChange}
+                onKeyDown={this.handleTitleKeyCommand}
+              />
+            </div>
+            <Editor
+              ref={this.contentRef}
+              editorState={this.state.editorState}
+              handleKeyCommand={this.handleKeyCommand}
+              onChange={this.onChange}
+            />
+          </div>
+        </div>
       </div>
     );
   }

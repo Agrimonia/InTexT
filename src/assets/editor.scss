@@ -1,22 +1,37 @@
-.DraftEditor-root {
-  position: fixed;
+.editor-area {
+  justify-content: center;
+  display: flex;
+}
+.editor-content {
   display: flex;
   overflow: auto;
   flex-grow: 1;
   flex-direction: column;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
   background-color: #fff;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   margin-left: 10rem;
   margin-right: 10rem;
-  margin-top: 5rem;
-  margin-bottom: 5rem;
+  min-height: 1173px;
+  height: 100%;
+  max-width: 816px;
   box-shadow: 0 1px 6px #ccc;
 }
+.editor-title-box {
+  padding-top: 5rem;
+  margin: 0 6rem;
+  .editor-title {
+    border: none;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    line-height: 50px;
+    box-shadow: none;
+    outline: none;
+  }
+}
 .DraftEditor-editorContainer {
-  margin: 2rem;
+  margin: 1rem 6rem;
   span {
     color: #1c1e29;
     letter-spacing: 0;

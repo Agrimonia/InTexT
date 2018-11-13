@@ -28,11 +28,7 @@ export default class Header extends React.Component {
       <div className="header-bar">
         <span className="header-button-left">
           <Button shape="circle" icon="left" />
-          <Dropdown
-            className="export-button"
-            overlay={exportMenu}
-            placement="topLeft"
-          >
+          <Dropdown overlay={exportMenu} placement="topLeft">
             <Button shape="circle" icon="export" />
           </Dropdown>
         </span>
