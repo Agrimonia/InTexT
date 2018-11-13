@@ -60,7 +60,6 @@ export default class EditorPage extends React.Component {
     if (command.keyCode == 13) {
       // Enter: 13
       const content = this.contentRef.current;
-      console.log(content);
       content.focus();
     }
   };
@@ -99,7 +98,7 @@ export default class EditorPage extends React.Component {
                 value={this.state.title}
                 placeholder="无标题"
                 onChange={this.handleTitleChange}
-                onKeyDown={this.handleTitleKeyCommand}
+                onKeyUp={this.handleTitleKeyCommand}
               />
             </div>
             <Editor
