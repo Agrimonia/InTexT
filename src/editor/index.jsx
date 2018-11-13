@@ -6,7 +6,7 @@ import {
   convertFromRaw,
   RichUtils
 } from "draft-js";
-import HeaderBar from "../components/headerBar";
+import Header from "../components/header";
 
 import "../assets/editor.scss";
 
@@ -14,6 +14,7 @@ export default class DraftEditor extends React.Component {
   constructor() {
     super();
     this.state = {};
+
     this.focus = e => this.refs.editor.focus();
     const content = window.localStorage.getItem("content");
 
@@ -68,7 +69,7 @@ export default class DraftEditor extends React.Component {
   render() {
     return (
       <div>
-        <HeaderBar />
+        <Header />
         <Editor
           editorState={this.state.editorState}
           handleKeyCommand={this.handleKeyCommand}

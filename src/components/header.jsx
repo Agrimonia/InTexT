@@ -1,30 +1,35 @@
 import React from "react";
-import { Button, Icon } from "antd";
+import { Button, Menu } from "antd";
 
-import "../assets/headerBar.scss";
+import "../assets/header.scss";
 
-export default class HeaderBar extends React.Component {
+export default class Header extends React.Component {
   constructor() {
     super();
-    this.state = {
-      loading: false
-    };
+    this.state = { loading: false, title: "" };
   }
-  enterLoadinåg = () => {
+  enterLoading = () => {
     this.setState({ loading: true });
     // check();
-    sleep(100);
+
     // this.setState({ loading: false});
   };
 
   render() {
+    const exportMenu = (
+      <Menu>
+        <Menu.Item />
+      </Menu>
+    );
     return (
       <div className="header-bar">
         <span className="header-button-left">
-          <Button shape="circle" size="large">
-            <Icon type="left" />
-          </Button>
+          <Button shape="circle" icon="left" />
+          <Dropdown overlay={menu} placement="topLeft">
+            <Button shape="circle" icon="export" />
+          </Dropdown>
         </span>
+        <h1>{this.title}</h1>
         <span className="header-button-right">
           <Button
             type="primary"
