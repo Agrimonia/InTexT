@@ -1,0 +1,17 @@
+.DraftEditor-root {
+  position: fixed;
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+  z-index: 99999;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  margin: 100px;
+  border: 1px solid #000;
+}
+.DraftEditor-editorContainer {
+  margin: 2rem;
+}

@@ -1,23 +1,37 @@
 import React from "react";
-import { Editor, EditorState, RichUtils } from "draft-js";
+import {
+  Editor,
+  EditorState,
+  convertToRaw,
+  convertFromRaw,
+  RichUtils
+} from "draft-js";
+import HeaderBar from "../components/headerBar";
+
+import "../assets/editor.scss";
 
 export default class DraftEditor extends React.Component {
   constructor() {
     super();
-    this.state = {
-      editorState: EditorState.createEmpty(),
-      anchorKey: "",
-      currentContent: {}
-    };
+    this.state = {};
+    this.focus = e => this.refs.editor.focus();
+    const content = window.localStorage.getItem("content");
+
+    if (content) {
+      this.state.editorState = EditorState.createWithContent(
+        convertFromRaw(JSON.parse(content))
+      );
+    } else {
+      this.state.editorState = EditorState.createEmpty();
+    }
   }
 
   onChange = editorState => {
+    const contentState = editorState.getCurrentContent();
+    this.saveContent(contentState);
     this.setState({
-      editorState: editorState,
-      anchorKey: editorState.getSelection().getAnchorKey(),
-      currentContent: editorState.getCurrentContent()
+      editorState
     });
-    console.log(this.state);
   };
 
   getTextArrayFromEditor = () => {
@@ -44,9 +58,17 @@ export default class DraftEditor extends React.Component {
     return "not-handled";
   };
 
+  saveContent = content => {
+    window.localStorage.setItem(
+      "content",
+      JSON.stringify(convertToRaw(content))
+    );
+  };
+
   render() {
     return (
       <div>
+        <HeaderBar />
         <Editor
           editorState={this.state.editorState}
           handleKeyCommand={this.handleKeyCommand}
