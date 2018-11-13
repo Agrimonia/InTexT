@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Menu } from "antd";
+import { Button, Menu, Icon, Dropdown } from "antd";
 
 import "../assets/header.scss";
 
@@ -18,18 +18,24 @@ export default class Header extends React.Component {
   render() {
     const exportMenu = (
       <Menu>
-        <Menu.Item />
+        <Menu.Item key="HTML">导出为 HTML</Menu.Item>
+        <Menu.Item key="Markdown">导出为 Markdown</Menu.Item>
+        <Menu.Item key="DOC">导出为 DOC</Menu.Item>
+        <Menu.Item key="PDF">导出为 PDF</Menu.Item>
       </Menu>
     );
     return (
       <div className="header-bar">
         <span className="header-button-left">
           <Button shape="circle" icon="left" />
-          <Dropdown overlay={menu} placement="topLeft">
+          <Dropdown
+            className="export-button"
+            overlay={exportMenu}
+            placement="topLeft"
+          >
             <Button shape="circle" icon="export" />
           </Dropdown>
         </span>
-        <h1>{this.title}</h1>
         <span className="header-button-right">
           <Button
             type="primary"

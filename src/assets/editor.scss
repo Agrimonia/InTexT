@@ -2,16 +2,27 @@
   position: fixed;
   display: flex;
   overflow: auto;
+  flex-grow: 1;
   flex-direction: column;
-  z-index: 99999;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   background-color: #fff;
-  margin: 100px;
-  border: 1px solid #000;
+  margin-left: 10rem;
+  margin-right: 10rem;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  box-shadow: 0 1px 6px #ccc;
 }
 .DraftEditor-editorContainer {
   margin: 2rem;
+  span {
+    color: #1c1e29;
+    letter-spacing: 0;
+    font-family: Akkurat Std, -apple-system, BlinkMacSystemFont, Segoe UI,
+      Roboto, Oxygen, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
+    font-size: 1.125rem;
+    line-height: 2rem;
+  }
 }
