@@ -1,15 +1,19 @@
 .header-bar {
   display: flex;
+  justify-content: space-between;
+  margin: 1rem;
 
-  header {
-    flex: auto;
-    margin: 1rem 1rem 1rem 2rem;
-    font-family: "Open Sans", "Helvetica Neue", Arial, "Hiragino Sans GB",
-      "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
-    font-size: 32px;
+  .header-button-left {
+    margin-left: 1rem;
+    button {
+      border: none;
+    }
   }
 
-  .header-button {
-    margin: 1rem 2rem 1rem 1rem;
+  .header-button-right {
+    margin-right: 1rem;
+    button {
+      border-radius: 0.6rem;
+    }
   }
 }
