@@ -1,0 +1,15 @@
+.header-bar {
+  display: flex;
+
+  header {
+    flex: auto;
+    margin: 1rem 1rem 1rem 2rem;
+    font-family: "Open Sans", "Helvetica Neue", Arial, "Hiragino Sans GB",
+      "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 32px;
+  }
+
+  .header-button {
+    margin: 1rem 2rem 1rem 1rem;
+  }
+}

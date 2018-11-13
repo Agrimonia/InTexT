@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom";
 import React from "react";
 
-import DraftEditor from "./editor.jsx";
+import DraftEditor from "./editor/index.jsx";
 
 const HTMLContainer = document.getElementById("container");
 
