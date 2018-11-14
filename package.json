@@ -2,7 +2,7 @@
   "name": "intext",
   "version": "1.0.0",
   "description": "Intelligent Text Editor by JoTang",
-  "main": "src/main.js",
+  "main": "src/App.js",
   "author": "Agrimonia",
   "license": "MIT",
   "private": true,
@@ -20,8 +20,10 @@
     "axios": "^0.18.0",
     "draft-js": "^0.10.5",
     "languagetool-api": "^1.1.2",
-    "react": "^16.6.1",
-    "react-dom": "^16.6.1"
+    "react": ">=15",
+    "react-dom": "^16.6.1",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.5",
