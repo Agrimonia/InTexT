@@ -6,40 +6,39 @@ import {
   convertFromRaw,
   RichUtils
 } from "draft-js";
+import { connect } from "react-redux";
 import Header from "../components/header";
+
+import localforage from "localforage";
 
 import "../assets/editor.scss";
 
-export default class EditorPage extends React.Component {
+class EditorPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      title: "Hello World"
+      title: "Hello World",
+      editorState: EditorState.createEmpty()
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
-    this.focus = e => this.refs.editor.focus();
-    const content = window.localStorage.getItem("content");
+  }
 
-    if (content) {
-      this.state.editorState = EditorState.createWithContent(
-        convertFromRaw(JSON.parse(content))
-      );
-    } else {
-      this.state.editorState = EditorState.createEmpty();
-    }
-  }
   componentDidMount() {
-    // this.titleRef.focus()
+    this.getContentFromLocal();
   }
-  onChange = editorState => {
-    const contentState = editorState.getCurrentContent();
-    this.saveContent(contentState);
-    this.setState({
-      editorState
+
+  focus = e => this.refs.editor.focus();
+
+  getContentFromLocal() {
+    localforage.getItem("content").then(value => {
+      this.setState({
+        editorState: EditorState.createWithContent(
+          convertFromRaw(JSON.parse(value))
+        )
+      });
     });
-    console.log(this.getTextArrayFromEditor());
-  };
+  }
 
   getTextArrayFromEditor = () => {
     const textArray = this.state.editorState
@@ -78,11 +77,17 @@ export default class EditorPage extends React.Component {
     return "not-handled";
   };
 
+  onChange = editorState => {
+    const contentState = editorState.getCurrentContent();
+    this.saveContent(contentState);
+    this.setState({
+      editorState
+    });
+    // console.log(this.getTextArrayFromEditor());
+  };
+
   saveContent = content => {
-    window.localStorage.setItem(
-      "content",
-      JSON.stringify(convertToRaw(content))
-    );
+    localforage.setItem("content", JSON.stringify(convertToRaw(content)));
   };
 
   render() {
@@ -113,3 +118,5 @@ export default class EditorPage extends React.Component {
     );
   }
 }
+
+export default connect(state => ({ authData: state.user.data }))(EditorPage);
