@@ -6,14 +6,14 @@ import {
   convertFromRaw,
   RichUtils
 } from "draft-js";
-
+import { connect } from "react-redux";
 import Header from "../components/header";
 
 import localforage from "localforage";
 
 import "../assets/editor.scss";
 
-export default class EditorPage extends React.Component {
+class EditorPage extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -25,13 +25,13 @@ export default class EditorPage extends React.Component {
   }
 
   componentDidMount() {
-    this.getContentFromLocal(this.props.noteID);
+    this.getContentFromLocal();
   }
 
   focus = e => this.refs.editor.focus();
 
   getContentFromLocal() {
-    localforage.getItem(noteID).then(value => {
+    localforage.getItem("content").then(value => {
       this.setState({
         editorState: EditorState.createWithContent(
           convertFromRaw(JSON.parse(value))
@@ -118,3 +118,5 @@ export default class EditorPage extends React.Component {
     );
   }
 }
+
+export default connect(state => ({ authData: state.user.data }))(EditorPage);
