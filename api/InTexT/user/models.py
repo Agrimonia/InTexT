@@ -12,6 +12,8 @@ class User(db.Model):
     is_active = db.Column(db.Boolean, nullable=False)
     token = db.Column(db.String(255), nullable=False)
 
+    notes = db.relationship("Note")
+
     # Flask-Login integration
     def is_authenticated(self):
         return True
