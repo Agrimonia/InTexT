@@ -1,31 +1,24 @@
-from flask_restful import Resource, reqparse
-from flask import session
+from flask_restful import Resource
+from flask import session, request
 from InTexT.user.models import User
 from flask_login import login_user, logout_user, login_required
 from InTexT.user.encrypt import decrypt
 
 
-login_parser = reqparse.RequestParser()
-login_parser.add_argument('username', help='This field cannot be blank', required=True)
-login_parser.add_argument('password', help='This field cannot be blank', required=True)
-
-
 class UserRegistration(Resource):
     def post(self):
-        data = login_parser.parse_args()
+        if User.query.filter_by(username=request.form['username']).first():
+            return {'message': 'User {} already exists'.format(request.form['username'])}
 
-        if User.find_by_username(data['username']):
-            return {'message': 'User {} already exists'.format(data['username'])}
-
-        new_user = User(
-            username=data['username'],
-            password=User.generate_hash(data['password'])
-        )
-
+        user = User()
+        args = {}
+        args['username'] = request.form['username']
+        args['password'] = request.form['password']
+        args['email'] = request.form['email']
         try:
-            new_user.save_to_db()
+            user.save(args)
             return {
-                'message': 'User {} was created'.format(data['username']),
+                'message': 'User {} was created'.format(request.form['username']),
             }
         except:
             return {'message': 'Something went wrong'}, 500
@@ -33,10 +26,9 @@ class UserRegistration(Resource):
 
 class UserLogin(Resource):
     def post(self):
-        args = login_parser.parse_args()
-        user = User.query.filter_by(username=args['username']).first()
+        user = User.query.filter_by(username=request.form['username']).first()
         if user:
-            if decrypt(args['password'], user.password):
+            if decrypt(request.form['password'], user.password):
                 login_user(user)
 
                 return {'token': session['_id']}, 200
