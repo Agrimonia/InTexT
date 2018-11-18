@@ -6,14 +6,14 @@ import {
   convertFromRaw,
   RichUtils
 } from "draft-js";
-import { connect } from "react-redux";
-import Header from "../components/header";
+
+import Header from "../components/editor-header";
 
 import localforage from "localforage";
 
-import "../assets/editor.scss";
+import "../assets/Editor.scss";
 
-class EditorPage extends React.Component {
+export default class EditorPage extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -118,5 +118,3 @@ class EditorPage extends React.Component {
     );
   }
 }
-
-export default connect(state => ({ authData: state.user.data }))(EditorPage);

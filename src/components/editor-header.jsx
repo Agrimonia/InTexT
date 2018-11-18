@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Menu, Icon, Dropdown } from "antd";
-
-import "../assets/header.scss";
+import { NavLink } from "react-router-dom";
+import "../assets/editor-header.scss";
 
 export default class Header extends React.Component {
   constructor() {
@@ -27,7 +27,9 @@ export default class Header extends React.Component {
     return (
       <div className="header-bar">
         <span className="header-button-left">
-          <Button shape="circle" icon="left" />
+          <NavLink to="/">
+            <Button shape="circle" icon="left" />
+          </NavLink>
           <Dropdown overlay={exportMenu} placement="topLeft">
             <Button shape="circle" icon="export" />
           </Dropdown>

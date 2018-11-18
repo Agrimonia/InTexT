@@ -1,23 +1,54 @@
 import React from "react";
+import { Layout, Menu, Breadcrumb, Icon } from "antd";
+import Documents from "../components/documents";
 
-export default function Home() {
-  return (
-    <div>
-      <h4>
-        {
-          "This demo serves as an example on how to use redux-auth-wrapper with react-router-4"
-        }
-      </h4>
-      <h4>
-        {
-          "Notice that Protected and Admin routes are protected and you will have to log in to see them."
-        }
-      </h4>
-      <h4>
-        {
-          "The Admin page required you to be logged in as an admin. Click Login to begin the demo."
-        }
-      </h4>
-    </div>
-  );
+const { Header, Content, Footer, Sider } = Layout;
+
+// const SubMenu = Menu.SubMenu;
+export default class Home extends React.Component {
+  state = {
+    collapsed: false
+  };
+
+  onCollapse = collapsed => {
+    console.log(collapsed);
+    this.setState({ collapsed });
+  };
+
+  render() {
+    return (
+      <Layout style={{ minHeight: "100vh" }}>
+        <Sider
+          collapsible
+          collapsed={this.state.collapsed}
+          onCollapse={this.onCollapse}
+        >
+          <div className="logo" />
+          <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+            <Menu.Item key="1">
+              <Icon type="inbox" />
+              <span>我的文档</span>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Icon type="user" />
+              <span>用户中心</span>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Icon type="logout" />
+              <span>登出</span>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+        <Layout>
+          <Header style={{ background: "#fff", padding: 0 }} />
+          <Content>
+            <Documents />
+          </Content>
+          <Footer style={{ textAlign: "center" }}>
+            InTexT ©2018 Created by JoTang
+          </Footer>
+        </Layout>
+      </Layout>
+    );
+  }
 }

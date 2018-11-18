@@ -7,10 +7,10 @@ class Note(db.Model):
 
     note_id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=True)
-    notetitle = db.Column(db.String(80), nullable=False)
+    note_title = db.Column(db.String(80), nullable=False)
     author = db.Column(db.String(20), db.ForeignKey('users.username'))
-    createtime = db.Column(db.String(30), nullable=False)
-    updatetime = db.Column(db.String(30))
+    create_time = db.Column(db.String(30), nullable=False)
+    update_time = db.Column(db.String(30))
     isdel = db.Column(db.Boolean, nullable=False)
     global_id = db.Column(db.Integer, nullable=True)
 

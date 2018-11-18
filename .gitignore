@@ -6,3 +6,5 @@ dist
 instance
 __pycache__
 .idea
+python3
+venv
