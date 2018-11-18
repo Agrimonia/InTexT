@@ -6,3 +6,4 @@ dist
 instance
 __pycache__
 .idea
+api/InTexT/db.sqlite
