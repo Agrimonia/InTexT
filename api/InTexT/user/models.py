@@ -12,7 +12,7 @@ class User(db.Model):
     is_active = db.Column(db.Boolean, nullable=False)
     token = db.Column(db.String(255), nullable=False)
 
-    notes = db.relationship("Note")
+    user_notes = db.relationship("Note", lazy='dynamic')
 
     # Flask-Login integration
     def is_authenticated(self):

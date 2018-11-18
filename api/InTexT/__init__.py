@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from flask_login import LoginManager
 from flask_docs import ApiDoc
+from flask_cors import CORS
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_object('config')
@@ -11,6 +12,7 @@ app.config['RESTFUL_API_DOC_EXCLUDE'] = []
 db = SQLAlchemy(app)
 api = Api(app)
 ApiDoc(app)
+CORS(app, allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"])
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -39,3 +41,4 @@ api.add_resource(InTexT.note.resources.NoteCreate, '/api/note/create')
 api.add_resource(InTexT.note.resources.NoteUpdate, '/api/note/update')
 api.add_resource(InTexT.note.resources.NoteDelete, '/api/note/delete')
 api.add_resource(InTexT.note.resources.NoteSearch, '/api/note/<string:global_id>')
+api.add_resource(InTexT.user.resources.UserNotes, '/api/show_note_list')

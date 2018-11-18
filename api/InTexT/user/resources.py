@@ -3,6 +3,7 @@ from flask import session, request
 from InTexT.user.models import User
 from flask_login import login_user, logout_user, login_required
 from InTexT.user.encrypt import decrypt
+import json
 
 
 class UserRegistration(Resource):
@@ -33,9 +34,9 @@ class UserLogin(Resource):
 
                 return {'token': session['_id']}, 200
             else:
-                return {'message': {'password': 'password is wrong'}}, 400
+                return {'message': 'password is wrong'}, 400
         else:
-            return {'message': {'username': 'no user'}}, 400
+            return {'message': 'no user'}, 400
 
 
 class UserLogout(Resource):
@@ -43,3 +44,18 @@ class UserLogout(Resource):
     def get(self):
         logout_user()
         return {'status': 200}
+
+
+class UserNotes(Resource):
+    @login_required
+    def post(self):
+        user = User.query.filter_by(username=request.form['username']).first()
+        note_list = user.user_notes.all()
+        notes = {}
+        for note in note_list:
+            name = str(note.global_id)
+            notes[name] = {"global_id": str(note.global_id), "note_title": str(note.note_title)}
+        if note_list:
+            return notes
+        else:
+            return {'message': 'Something went wrong'}, 500

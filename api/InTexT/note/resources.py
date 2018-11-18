@@ -5,19 +5,18 @@ from flask_login import login_required
 
 
 class NoteCreate(Resource):
+
     @login_required
     def post(self):
         note = Note()
         args = {}
-        args['notetitle'] = request.form['notetitle']
+        args['note_title'] = request.form['note_title']
         args['author'] = request.form['author']
         args['content'] = request.form['content']
         args['global_id'] = request.form['global_id']
         try:
             note.save(args)
-            return {
-                'message': 'Note was created',
-            }
+            return {'message': 'Note was created'}
         except:
             return {'message': 'Something went wrong'}, 500
 
@@ -27,16 +26,14 @@ class NoteUpdate(Resource):
     def post(self):
         args = {}
         args['global_id'] = request.form['global_id']
-        args['notetitle'] = request.form['notetitle']
+        args['note_title'] = request.form['note_title']
         args['author'] = request.form['author']
         args['content'] = request.form['content']
 
         note = Note()
         try:
             note.update(args)
-            return {
-                'message': 'Note was updated',
-            }
+            return {'message': 'Note was updated'}
         except:
             return {'message': 'Something went wrong'}, 500
 
@@ -49,10 +46,8 @@ class NoteDelete(Resource):
 
         note = Note()
         try:
-            note.isdel(args)
-            return {
-                'message': 'Note was deleted',
-            }
+            note.is_del(args)
+            return {'message': 'Note was deleted'}
         except:
             return {'message': 'Something went wrong'}, 500
 
@@ -63,4 +58,7 @@ class NoteSearch(Resource):
         note = Note()
         data = note.getnote(global_id)
 
-        return data
+        if data:
+            return data
+        else:
+            return {'message': 'Something went wrong'}, 500
