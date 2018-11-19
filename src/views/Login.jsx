@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
-import { APIClinet } from "../utils/client.js";
+import { APIClient } from "../utils/client.js";
 import { withRouter } from "react-router-dom";
 import LoginState from "../store/LoginStateStore";
 import "../assets/Login.scss";
@@ -17,7 +17,7 @@ class Login extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        APIClinet.post("/login/", values)
+        APIClient.post("/login/", values)
           .then(response => {
             LoginState.token = response.data.token;
             LoginState.username = values.username;
