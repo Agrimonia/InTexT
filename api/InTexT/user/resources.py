@@ -55,6 +55,6 @@ class UserNotes(Resource):
             notes.append({"global_id": note.global_id, "note_title": note.note_title, "template": note.template,
                            "create_time": str(note.create_time), "update_time": str(note.update_time)})
         if note_list:
-            return {'note': notes}
+            return {'notes': notes}
         else:
             return {'message': 'Something went wrong'}, 500
