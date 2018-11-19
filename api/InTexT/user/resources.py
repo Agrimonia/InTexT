@@ -53,8 +53,7 @@ class UserNotes(Resource):
         notes = {}
         for note in note_list:
             name = str(note.global_id)
-            notes[name] = {"global_id": str(note.global_id), "note_title": str(note.note_title),
-                           "create_time": str(note.create_time), "update_time": str(note.update_time)}
+            notes[name] = {"global_id": str(note.global_id), "note_title": str(note.note_title)}
         if note_list:
             return notes
         else:
