@@ -12,20 +12,28 @@ InTexT is an intelligent text editor by JoTang.
 
 ```bash
 git clone
+
 cd intext
+
 yarn
+
 yarn dev
+
 ```
 
 #### 后端运行
 
 ```bash
 建议先进入虚拟环境
+
 cd api
+
 pip install -r requirements
+
 python manage.py db_create
-python manage.py load_test_users
+
 python run.py
+
 ```
 
 ### 用 Prettier 进行代码格式化
