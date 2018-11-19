@@ -10,7 +10,7 @@ import {
 import Header from "../components/editor-header";
 import { generateNoteID } from "../utils/id";
 import localforage from "localforage";
-
+import LoginState from "../store/LoginStateStore";
 import "../assets/Editor.scss";
 import { APIClient } from "../utils/client";
 
@@ -18,13 +18,15 @@ export default class EditorPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      note_title: "",
+      note_title: "无标题",
       template: "默认",
       editorState: EditorState.createEmpty(),
-      global_id: ""
+      global_id: "",
+      author: LoginState.username
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
+    console.log(this.state);
   }
 
   componentDidMount() {
@@ -46,13 +48,13 @@ export default class EditorPage extends React.Component {
     } else {
       this.setState(
         {
-          global_id: generateNoteID()
-          //template: this.props.lacation.state.template || this.state.template
+          global_id: generateNoteID(),
+          template: this.props.lacation.state.template || this.state.template
         },
         () => {
           console.log("初始化新文章", this.state.global_id);
           console.log("文章类型：", this.state.template);
-          APIClient.post("/create_note", {
+          APIClient.post("/note/create", {
             global_id: this.state.global_id,
             template: this.state.template,
             note_title: ""
@@ -94,7 +96,7 @@ export default class EditorPage extends React.Component {
   // Title
   handleTitleChange = e => {
     this.setState({ note_title: e.target.value }, () => {
-      APIClient.post("/update_note", {
+      APIClient.post("/note/update", {
         global_id: this.state.global_id,
         note_title: this.state.note_title
       });

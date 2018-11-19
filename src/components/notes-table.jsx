@@ -9,39 +9,40 @@ export default class NotesTable extends React.Component {
   constructor() {
     super();
     this.state = {
-      notes: [
-        {
-          global_id: "12355412342G787y",
-          note_title: "十九大学习报告",
-          author: "testuser",
-          template: "报告/学习报告",
-          update_time: "2018/11/19 下午9:30:28"
-        },
-        {
-          global_id: "156542342347yf63",
-          note_title: "玄幻小说第三章",
-          author: "testuser",
-          template: "小说/玄幻",
-          update_time: "2018/11/19 下午9:30:28"
-        }
-      ],
+      notes: [],
       loading: true
     };
   }
 
-  // componentDidMount() {
-  //   APIClient.get("/note_list")
-  //     .then(response => {
-  //       // const notes = response.data;
-  //       this.setState({
-  //         notes: notes,
-  //         loading: false
-  //       });
-  //     })
-  //     .catch(error => {
-  //       console.log("获取文章数据失败", error);
-  //     });
-  // }
+  componentDidMount() {
+    this.getNoteList();
+  }
+
+  getNoteList = () => {
+    APIClient.get("/note_list")
+      .then(response => {
+        const notes = response.data.notes;
+        console.log(notes);
+        this.setState({
+          notes: notes,
+          loading: false
+        });
+      })
+      .catch(error => {
+        console.log("获取文章数据失败", error);
+      });
+  };
+
+  handleDelete = global_id => {
+    this.setState({
+      loading: true
+    });
+    APIClient.post("/note/delete", global_id)
+      .then(this.getNoteList())
+      .catch(error => {
+        console.log("删除文章失败", error);
+      });
+  };
 
   render() {
     return (
@@ -76,7 +77,8 @@ export default class NotesTable extends React.Component {
             <span>
               <a href="javascript:;">分享</a>
               <Divider type="vertical" />
-              <a href="javascript:;">删除</a>
+              <a onClick={this.handleDelete.bind(this, global_id)}>删除</a>
+              {/* render 函数中要 bind this */}
             </span>
           )}
         />
