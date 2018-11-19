@@ -53,11 +53,3 @@ class Note(db.Model):
 
         return data
 
-    def getnoteby(self, global_id):
-        note = Note.query.filter_by(global_id=global_id).first()
-        content = str(note.content)
-        note_title = str(note.note_title)
-        update_time = str(note.update_time)
-        create_time = str(note.create_time)
-        author = str(note.author)
-        is_del = str(note.is_del)

@@ -3,7 +3,6 @@ from flask import session, request
 from InTexT.user.models import User
 from flask_login import login_user, logout_user, login_required
 from InTexT.user.encrypt import decrypt
-import json
 
 
 class UserRegistration(Resource):
