@@ -15,9 +15,6 @@ def db_create():
     except:
         print('error!')
 
-
-@manager.command
-def load_test_users():
     user = User()
     args = {}
     args['username'] = 'testuser'

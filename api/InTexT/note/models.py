@@ -13,12 +13,14 @@ class Note(db.Model):
     update_time = db.Column(db.String(30))
     is_del = db.Column(db.Boolean, nullable=False)
     global_id = db.Column(db.String(21), nullable=True)
+    template = db.Column(db.String(30), nullable=False)
 
     def save(self, args):
         self.note_title = args['note_title']
         self.author = args['author']
         self.content = args['content']
         self.global_id = args['global_id']
+        self.template = args['template']
         self.create_time = datetime.now()
         self.is_del = 0
 
@@ -47,9 +49,10 @@ class Note(db.Model):
         create_time = str(note.create_time)
         author = str(note.author)
         is_del = str(note.is_del)
+        template = str(note.template)
 
         data = {"content": content, "note_title": note_title, "update_time": update_time,
-                "create_time": create_time, "author": author, "is_del": is_del}
+                "create_time": create_time, "author": author, "is_del": is_del, "template": template}
 
         return data
 

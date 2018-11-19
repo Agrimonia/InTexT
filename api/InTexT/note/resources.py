@@ -13,6 +13,7 @@ class NoteCreate(Resource):
         args['author'] = current_user.username
         args['content'] = request.json.get('content', False)
         args['global_id'] = request.json.get('global_id', False)
+        args['template'] = request.json.get('template', False)
         try:
             note.save(args)
             return {'message': 'Note was created'}
