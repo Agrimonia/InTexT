@@ -35,7 +35,7 @@ export default class EditorPage extends React.Component {
       this.setState(
         {
           note_title:
-            this.props.location.state.note_title || this.state.template,
+            this.props.location.state.note_title || this.state.note_title,
           global_id: this.props.location.state.global_id,
           template: this.props.location.state.template
         },
@@ -49,7 +49,7 @@ export default class EditorPage extends React.Component {
       this.setState(
         {
           global_id: generateNoteID(),
-          template: this.props.lacation.state.template || this.state.template
+          template: this.props.location.state.template
         },
         () => {
           console.log("初始化新文章", this.state.global_id);
