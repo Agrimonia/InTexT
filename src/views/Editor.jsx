@@ -6,39 +6,82 @@ import {
   convertFromRaw,
   RichUtils
 } from "draft-js";
-import { connect } from "react-redux";
-import Header from "../components/header";
 
+import Header from "../components/editor-header";
+import { generateNoteID } from "../utils/id";
 import localforage from "localforage";
+import LoginState from "../store/LoginStateStore";
+import "../assets/Editor.scss";
+import { APIClient } from "../utils/client";
 
-import "../assets/editor.scss";
-
-class EditorPage extends React.Component {
+export default class EditorPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      title: "Hello World",
-      editorState: EditorState.createEmpty()
+      note_title: "无标题",
+      template: "默认",
+      editorState: EditorState.createEmpty(),
+      global_id: "",
+      author: LoginState.username
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
+    console.log(this.state);
   }
 
   componentDidMount() {
-    this.getContentFromLocal();
+    console.log(this.props.location.state.template);
+    if (this.props.location.state.hasOwnProperty("global_id")) {
+      this.setState(
+        {
+          note_title:
+            this.props.location.state.note_title || this.state.template,
+          global_id: this.props.location.state.global_id,
+          template: this.props.location.state.template
+        },
+        () => {
+          console.log("打开文章", this.state.global_id);
+          console.log("文章类型：", this.state.template);
+          this.getContentFromLocal();
+        }
+      );
+    } else {
+      this.setState(
+        {
+          global_id: generateNoteID(),
+          template: this.props.lacation.state.template || this.state.template
+        },
+        () => {
+          console.log("初始化新文章", this.state.global_id);
+          console.log("文章类型：", this.state.template);
+          APIClient.post("/note/create", {
+            global_id: this.state.global_id,
+            template: this.state.template,
+            note_title: ""
+          });
+        }
+      );
+    }
   }
 
   focus = e => this.refs.editor.focus();
 
-  getContentFromLocal() {
-    localforage.getItem("content").then(value => {
+  getContentFromLocal = () => {
+    console.log(this.state.global_id);
+    localforage.getItem(this.state.global_id).then(value => {
       this.setState({
         editorState: EditorState.createWithContent(
           convertFromRaw(JSON.parse(value))
         )
       });
     });
-  }
+  };
+  saveContentToLocal = content => {
+    localforage.setItem(
+      this.state.global_id,
+      JSON.stringify(convertToRaw(content))
+    );
+  };
 
   getTextArrayFromEditor = () => {
     const textArray = this.state.editorState
@@ -52,7 +95,12 @@ class EditorPage extends React.Component {
 
   // Title
   handleTitleChange = e => {
-    this.setState({ title: e.target.value });
+    this.setState({ note_title: e.target.value }, () => {
+      APIClient.post("/note/update", {
+        global_id: this.state.global_id,
+        note_title: this.state.note_title
+      });
+    });
   };
 
   handleTitleKeyCommand = command => {
@@ -79,15 +127,11 @@ class EditorPage extends React.Component {
 
   onChange = editorState => {
     const contentState = editorState.getCurrentContent();
-    this.saveContent(contentState);
+    this.saveContentToLocal(contentState);
     this.setState({
       editorState
     });
     // console.log(this.getTextArrayFromEditor());
-  };
-
-  saveContent = content => {
-    localforage.setItem("content", JSON.stringify(convertToRaw(content)));
   };
 
   render() {
@@ -100,7 +144,7 @@ class EditorPage extends React.Component {
               <input
                 ref={this.titleRef}
                 className="editor-title"
-                value={this.state.title}
+                value={this.state.note_title}
                 placeholder="无标题"
                 onChange={this.handleTitleChange}
                 onKeyUp={this.handleTitleKeyCommand}
@@ -118,5 +162,3 @@ class EditorPage extends React.Component {
     );
   }
 }
-
-export default connect(state => ({ authData: state.user.data }))(EditorPage);

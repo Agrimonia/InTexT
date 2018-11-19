@@ -1,0 +1,5 @@
+DEBUG = False
+SQLALCHEMY_ECHO = False
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+CORS_ENABLED = True
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:Allen=1377@localhost:3306/intext'
