@@ -40,19 +40,18 @@ class Note(db.Model):
 
     def delete(self, args):
         note = Note.query.filter_by(global_id=args['global_id']).first()
-        print(args['global_id'])
+        # print(args['global_id'])
         note.is_del = 1
 
         db.session.commit()
 
     def update(self, args):
         note = Note.query.filter_by(global_id=args['global_id']).first()
-        if args['content']:
+        if 'content' in args:
             note.content = args['content']
-        if args['note_title']:
+        if 'note_title' in args:
             note.note_title = args['note_title']
         note.update_time = get_time()
-
         db.session.commit()
 
     def getnote(self, global_id):
