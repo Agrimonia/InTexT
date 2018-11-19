@@ -38,13 +38,14 @@ class Note(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def delete(args):
+    def delete(self, args):
         note = Note.query.filter_by(global_id=args['global_id']).first()
+        print(args['global_id'])
         note.is_del = 1
 
         db.session.commit()
 
-    def update(args):
+    def update(self, args):
         note = Note.query.filter_by(global_id=args['global_id']).first()
         if args['content']:
             note.content = args['content']

@@ -43,10 +43,10 @@ class NoteDelete(Resource):
     def post(self):
         args = {}
         args['global_id'] = request.json.get('global_id', False)
-
+        print(args)
         note = Note()
         try:
-            note.is_del(args)
+            note.delete(args)
             return {'message': 'Note was deleted'}
         except:
             return {'message': 'Something went wrong'}, 500
