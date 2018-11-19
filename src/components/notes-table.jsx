@@ -2,7 +2,7 @@ import React from "react";
 import { Table, Divider } from "antd";
 const Column = Table.Column;
 import { APIClient } from "../utils/client";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "../assets/notes-table.scss";
 
 export default class NotesTable extends React.Component {
@@ -14,14 +14,14 @@ export default class NotesTable extends React.Component {
           global_id: "12355412342G787y",
           note_title: "十九大学习报告",
           author: "testuser",
-          template: "学习报告-党",
+          template: "报告/学习报告",
           update_time: "2018/11/19 下午9:30:28"
         },
         {
           global_id: "156542342347yf63",
           note_title: "玄幻小说第三章",
           author: "testuser",
-          template: "小说-玄幻",
+          template: "小说/玄幻",
           update_time: "2018/11/19 下午9:30:28"
         }
       ],
@@ -51,14 +51,18 @@ export default class NotesTable extends React.Component {
           dataIndex="note_title"
           key="note_title"
           render={(note_title, record) => (
-            <Link
+            <NavLink
               to={{
                 pathname: "/editor",
-                state: { note_title: note_title, global_id: record.global_id }
+                state: {
+                  note_title: note_title,
+                  global_id: record.global_id,
+                  template: record.template
+                }
               }}
             >
               {note_title}
-            </Link>
+            </NavLink>
           )}
         />
         <Column title="作者" dataIndex="author" key="author" />
@@ -70,9 +74,7 @@ export default class NotesTable extends React.Component {
           key="action"
           render={global_id => (
             <span>
-              <Link to={{ pathname: "/editor", state: { id: global_id } }}>
-                打开
-              </Link>
+              <a href="javascript:;">分享</a>
               <Divider type="vertical" />
               <a href="javascript:;">删除</a>
             </span>

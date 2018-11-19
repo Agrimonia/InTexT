@@ -19,7 +19,7 @@ export default class EditorPage extends React.Component {
     super();
     this.state = {
       note_title: "",
-      template: "default",
+      template: "默认",
       editorState: EditorState.createEmpty(),
       global_id: ""
     };
@@ -28,14 +28,18 @@ export default class EditorPage extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props.location.state.template);
     if (this.props.location.state.hasOwnProperty("global_id")) {
       this.setState(
         {
-          note_title: this.props.location.state.note_title,
-          global_id: this.props.location.state.global_id
+          note_title:
+            this.props.location.state.note_title || this.state.template,
+          global_id: this.props.location.state.global_id,
+          template: this.props.location.state.template
         },
         () => {
           console.log("打开文章", this.state.global_id);
+          console.log("文章类型：", this.state.template);
           this.getContentFromLocal();
         }
       );
@@ -43,14 +47,16 @@ export default class EditorPage extends React.Component {
       this.setState(
         {
           global_id: generateNoteID()
+          //template: this.props.lacation.state.template || this.state.template
         },
         () => {
+          console.log("初始化新文章", this.state.global_id);
+          console.log("文章类型：", this.state.template);
           APIClient.post("/create_note", {
             global_id: this.state.global_id,
             template: this.state.template,
             note_title: ""
           });
-          console.log("初始化新文章", this.state.global_id);
         }
       );
     }
@@ -58,7 +64,7 @@ export default class EditorPage extends React.Component {
 
   focus = e => this.refs.editor.focus();
 
-  getContentFromLocal() {
+  getContentFromLocal = () => {
     console.log(this.state.global_id);
     localforage.getItem(this.state.global_id).then(value => {
       this.setState({
@@ -67,7 +73,7 @@ export default class EditorPage extends React.Component {
         )
       });
     });
-  }
+  };
   saveContentToLocal = content => {
     localforage.setItem(
       this.state.global_id,
