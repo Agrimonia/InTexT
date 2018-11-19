@@ -1,24 +1,33 @@
 from flask_script import Manager
 from InTexT import app
+from InTexT import db
 from InTexT.user.models import User
+
 
 manager = Manager(app)
 
 
-@manager.option('-n', '--number', dest='number', default='10')
-def load_users(number):
-    for i in range(0, int(number)):
-        user = User()
-        args = {}
-        args['username'] = 'demo' + str(i)
-        args['password'] = '123456'
-        args['email'] = 'demo' + str(i) + '@example.com'
+@manager.command
+def db_create():
+    try:
+        db.create_all()
+        print('you had create db')
+    except:
+        print('error!')
 
-        try:
-            user.save(args)
-        except:
-            print(args['username'], ' load eror!')
-            continue
+
+@manager.command
+def load_test_users():
+    user = User()
+    args = {}
+    args['username'] = 'testuser'
+    args['password'] = '123456'
+    args['email'] = 'testuser@example.com'
+
+    try:
+        user.save(args)
+    except:
+        print(args['username'], ' load error!')
 
     print('load over!')
 
