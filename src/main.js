@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import history from "./history";
+import { Router } from "react-router";
 
 ReactDOM.render(
-  <div>
+  <Router history={history}>
     <App />
-    {/* <DevTools /> */}
-  </div>,
+  </Router>,
   document.getElementById("container")
 );

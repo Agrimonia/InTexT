@@ -26,9 +26,9 @@ class UserRegistration(Resource):
 
 class UserLogin(Resource):
     def post(self):
-        user = User.query.filter_by(username=request.form['username']).first()
+        user = User.query.filter_by(username=request.json.get("username", False)).first()
         if user:
-            if decrypt(request.form['password'], user.password):
+            if decrypt(request.json.get("password", False), user.password):
                 login_user(user)
 
                 return {'token': session['_id']}, 200
