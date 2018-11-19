@@ -25,7 +25,7 @@ class NoteUpdate(Resource):
     @login_required
     def post(self):
         args = {}
-        args['global_id'] = request.form.json.get('global_id', False)
+        args['global_id'] = request.json.get('global_id', False)
         if request.json.get('content', False):
             args['content'] = request.json.get('content', False)
         if request.json.get('note_title', False):
