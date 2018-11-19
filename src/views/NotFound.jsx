@@ -14,7 +14,7 @@ const NotFound = () => (
       }}
     />
     <center>
-      <Link to="/">Return to Home Page</Link>
+      <Link to="/home">Return to Home Page</Link>
     </center>
   </div>
 );

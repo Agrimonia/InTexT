@@ -8,7 +8,7 @@ import {
 } from "draft-js";
 
 import Header from "../components/editor-header";
-
+import { generateNoteID } from "../utils/id";
 import localforage from "localforage";
 
 import "../assets/Editor.scss";
@@ -17,21 +17,43 @@ export default class EditorPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      title: "Hello World",
-      editorState: EditorState.createEmpty()
+      note_title: "",
+      editorState: EditorState.createEmpty(),
+      global_id: ""
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
   }
 
   componentDidMount() {
-    this.getContentFromLocal();
+    if (this.props.location.state.hasOwnProperty("global_id")) {
+      this.setState(
+        {
+          note_title: this.props.location.state.note_title,
+          global_id: this.props.location.state.global_id
+        },
+        () => {
+          console.log("打开文章", this.state.global_id);
+          this.getContentFromLocal();
+        }
+      );
+    } else {
+      this.setState(
+        {
+          global_id: generateNoteID()
+        },
+        () => {
+          console.log("初始化新文章", this.state.global_id);
+        }
+      );
+    }
   }
 
   focus = e => this.refs.editor.focus();
 
   getContentFromLocal() {
-    localforage.getItem("content").then(value => {
+    console.log(this.state.global_id);
+    localforage.getItem(this.state.global_id).then(value => {
       this.setState({
         editorState: EditorState.createWithContent(
           convertFromRaw(JSON.parse(value))
@@ -39,6 +61,12 @@ export default class EditorPage extends React.Component {
       });
     });
   }
+  saveContentToLocal = content => {
+    localforage.setItem(
+      this.state.global_id,
+      JSON.stringify(convertToRaw(content))
+    );
+  };
 
   getTextArrayFromEditor = () => {
     const textArray = this.state.editorState
@@ -52,7 +80,7 @@ export default class EditorPage extends React.Component {
 
   // Title
   handleTitleChange = e => {
-    this.setState({ title: e.target.value });
+    this.setState({ note_title: e.target.value });
   };
 
   handleTitleKeyCommand = command => {
@@ -79,15 +107,11 @@ export default class EditorPage extends React.Component {
 
   onChange = editorState => {
     const contentState = editorState.getCurrentContent();
-    this.saveContent(contentState);
+    this.saveContentToLocal(contentState);
     this.setState({
       editorState
     });
     // console.log(this.getTextArrayFromEditor());
-  };
-
-  saveContent = content => {
-    localforage.setItem("content", JSON.stringify(convertToRaw(content)));
   };
 
   render() {
@@ -100,7 +124,7 @@ export default class EditorPage extends React.Component {
               <input
                 ref={this.titleRef}
                 className="editor-title"
-                value={this.state.title}
+                value={this.state.note_title}
                 placeholder="无标题"
                 onChange={this.handleTitleChange}
                 onKeyUp={this.handleTitleKeyCommand}
