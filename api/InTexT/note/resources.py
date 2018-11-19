@@ -1,19 +1,18 @@
 from flask_restful import Resource
 from flask import request
 from InTexT.note.models import Note
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 
 class NoteCreate(Resource):
-
     @login_required
     def post(self):
         note = Note()
         args = {}
-        args['note_title'] = request.json.get['note_title']
-        args['author'] = request.json.get['author']
-        args['content'] = request.json.get['content']
-        args['global_id'] = request.json.get['global_id']
+        args['note_title'] = request.json.get('note_title', False)
+        args['author'] = current_user.username
+        args['content'] = request.json.get('content', False)
+        args['global_id'] = request.json.get('global_id', False)
         try:
             note.save(args)
             return {'message': 'Note was created'}
@@ -25,10 +24,10 @@ class NoteUpdate(Resource):
     @login_required
     def post(self):
         args = {}
-        args['global_id'] = request.form.json.get['global_id']
-        args['note_title'] = request.json.get['note_title']
-        args['author'] = request.json.get['author']
-        args['content'] = request.json.get['content']
+        args['global_id'] = request.form.json.get('global_id', False)
+        args['note_title'] = request.json.get('note_title', False)
+        args['author'] = request.json.get('author', False)
+        args['content'] = request.json.get('content', False)
 
         note = Note()
         try:
@@ -42,7 +41,7 @@ class NoteDelete(Resource):
     @login_required
     def post(self):
         args = {}
-        args['global_id'] = request.json.get['global_id']
+        args['global_id'] = request.json.get('global_id', False)
 
         note = Note()
         try:
