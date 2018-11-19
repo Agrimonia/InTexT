@@ -12,12 +12,14 @@ import { generateNoteID } from "../utils/id";
 import localforage from "localforage";
 
 import "../assets/Editor.scss";
+import { APIClient } from "../utils/client";
 
 export default class EditorPage extends React.Component {
   constructor() {
     super();
     this.state = {
       note_title: "",
+      template: "default",
       editorState: EditorState.createEmpty(),
       global_id: ""
     };
@@ -43,6 +45,11 @@ export default class EditorPage extends React.Component {
           global_id: generateNoteID()
         },
         () => {
+          APIClient.post("/create_note", {
+            global_id: this.state.global_id,
+            template: this.state.template,
+            note_title: ""
+          });
           console.log("初始化新文章", this.state.global_id);
         }
       );
@@ -80,7 +87,12 @@ export default class EditorPage extends React.Component {
 
   // Title
   handleTitleChange = e => {
-    this.setState({ note_title: e.target.value });
+    this.setState({ note_title: e.target.value }, () => {
+      APIClient.post("/update_note", {
+        global_id: this.state.global_id,
+        note_title: this.state.note_title
+      });
+    });
   };
 
   handleTitleKeyCommand = command => {
