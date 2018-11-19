@@ -10,10 +10,10 @@ class NoteCreate(Resource):
     def post(self):
         note = Note()
         args = {}
-        args['note_title'] = request.form['note_title']
-        args['author'] = request.form['author']
-        args['content'] = request.form['content']
-        args['global_id'] = request.form['global_id']
+        args['note_title'] = request.json.get['note_title']
+        args['author'] = request.json.get['author']
+        args['content'] = request.json.get['content']
+        args['global_id'] = request.json.get['global_id']
         try:
             note.save(args)
             return {'message': 'Note was created'}
@@ -25,10 +25,10 @@ class NoteUpdate(Resource):
     @login_required
     def post(self):
         args = {}
-        args['global_id'] = request.form['global_id']
-        args['note_title'] = request.form['note_title']
-        args['author'] = request.form['author']
-        args['content'] = request.form['content']
+        args['global_id'] = request.form.json.get['global_id']
+        args['note_title'] = request.json.get['note_title']
+        args['author'] = request.json.get['author']
+        args['content'] = request.json.get['content']
 
         note = Note()
         try:
@@ -42,7 +42,7 @@ class NoteDelete(Resource):
     @login_required
     def post(self):
         args = {}
-        args['global_id'] = request.form['global_id']
+        args['global_id'] = request.json.get['global_id']
 
         note = Note()
         try:

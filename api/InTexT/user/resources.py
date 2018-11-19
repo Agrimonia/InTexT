@@ -7,18 +7,18 @@ from InTexT.user.encrypt import decrypt
 
 class UserRegistration(Resource):
     def post(self):
-        if User.query.filter_by(username=request.form['username']).first():
-            return {'message': 'User {} already exists'.format(request.form['username'])}
+        if User.query.filter_by(username=request.json.get['username']).first():
+            return {'message': 'User {} already exists'.format(request.json.get['username'])}
 
         user = User()
         args = {}
-        args['username'] = request.form['username']
-        args['password'] = request.form['password']
-        args['email'] = request.form['email']
+        args['username'] = request.json.get['username']
+        args['password'] = request.json.get['password']
+        args['email'] = request.json.get['email']
         try:
             user.save(args)
             return {
-                'message': 'User {} was created'.format(request.form['username']),
+                'message': 'User {} was created'.format(request.json.get['username']),
             }
         except:
             return {'message': 'Something went wrong'}, 500
@@ -48,7 +48,7 @@ class UserLogout(Resource):
 class UserNotes(Resource):
     @login_required
     def post(self):
-        user = User.query.filter_by(username=request.form['username']).first()
+        user = User.query.filter_by(username=request.json.get['username']).first()
         note_list = user.user_notes.all()
         notes = {}
         for note in note_list:
