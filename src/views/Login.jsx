@@ -4,7 +4,7 @@ import { Form, Icon, Input, Button, Checkbox } from "antd";
 
 import "../assets/Login.scss";
 
-class LoginForm extends React.Component {
+class Login extends React.Component {
   constructor() {
     super();
   }
@@ -60,7 +60,17 @@ class LoginForm extends React.Component {
     );
   }
 }
+const LoginForm = Form.create()(Login);
 
-const LoginPage = Form.create()(LoginForm);
+const LoginPage = () => {
+  return (
+    <div className="login-page">
+      <div className="login-container">
+        <h1 className="login-title">Member Login</h1>
+        <LoginForm />
+      </div>
+    </div>
+  );
+};
 
 export default LoginPage;
