@@ -6,11 +6,13 @@ import {
   convertFromRaw,
   RichUtils
 } from "draft-js";
-
+import { List } from "antd";
 import Header from "../components/editor-header";
 import { generateNoteID } from "../utils/id";
 import localforage from "localforage";
 import LoginState from "../store/LoginStateStore";
+import languagetool from "languagetool-api";
+import debounce from "lodash.debounce";
 import "../assets/Editor.scss";
 import { APIClient } from "../utils/client";
 
@@ -20,22 +22,23 @@ export default class EditorPage extends React.Component {
     this.state = {
       note_title: "无标题",
       template: "默认",
-      editorState: EditorState.createEmpty(),
       global_id: "",
-      author: LoginState.username
+      author: LoginState.username,
+      editorState: EditorState.createEmpty(),
+      loading: false,
+      language: "zh-CN",
+      spellCheckList: []
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
-    console.log(this.state);
   }
 
   componentDidMount() {
-    console.log(this.props.location.state.template);
     if (this.props.location.state.hasOwnProperty("global_id")) {
       this.setState(
         {
           note_title:
-            this.props.location.state.note_title || this.state.template,
+            this.props.location.state.note_title || this.state.note_title,
           global_id: this.props.location.state.global_id,
           template: this.props.location.state.template
         },
@@ -49,7 +52,7 @@ export default class EditorPage extends React.Component {
       this.setState(
         {
           global_id: generateNoteID(),
-          template: this.props.lacation.state.template || this.state.template
+          template: this.props.location.state.template
         },
         () => {
           console.log("初始化新文章", this.state.global_id);
@@ -57,10 +60,20 @@ export default class EditorPage extends React.Component {
           APIClient.post("/note/create", {
             global_id: this.state.global_id,
             template: this.state.template,
-            note_title: ""
+            note_title: this.state.note_title,
+            author: this.state.author
           });
         }
       );
+    }
+    if (this.props.location.state.template.startsWith("En")) {
+      this.setState({
+        language: "en-US"
+      });
+    } else if (this.props.location.state.template.startsWith("中")) {
+      this.setState({
+        language: "zh-CN"
+      });
     }
   }
 
@@ -83,16 +96,14 @@ export default class EditorPage extends React.Component {
     );
   };
 
-  getTextArrayFromEditor = () => {
-    const textArray = this.state.editorState
-      .getCurrentContent()
-      .getBlocksAsArray()
-      .map(o => {
-        return o.text;
-      });
-    return textArray;
+  getSentenceFromEditor = () => {
+    const text = this.state.editorState.getCurrentContent().getPlainText();
+    // const validText = text
+    //   .split(/[。.]/)
+    //   .map(t => t.trim())
+    //   .filter(t => t.length > 3);
+    return text;
   };
-
   // Title
   handleTitleChange = e => {
     this.setState({ note_title: e.target.value }, () => {
@@ -125,20 +136,75 @@ export default class EditorPage extends React.Component {
     return "not-handled";
   };
 
+  spellCheck = () => {
+    const sentences = this.getSentenceFromEditor();
+    console.log("check!");
+    console.log(sentences);
+    languagetool.check(
+      { language: this.state.language, text: sentences },
+      (err, res) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(res);
+          let results = [];
+          res.matches.map(match => {
+            const result = {
+              key: match.sentence,
+              type: match.rule.category.name,
+              message: match.message,
+              shortMessage: match.shortMessage,
+              errorValue: match.context.text.slice(
+                match.offset,
+                match.offset + match.length
+              ),
+              replaceValue: match.replacements[0].value
+            };
+            results.push(result);
+          });
+          console.log(results);
+          this.setState({
+            spellCheckList: results
+          });
+        }
+      }
+    );
+  };
+
   onChange = editorState => {
     const contentState = editorState.getCurrentContent();
     this.saveContentToLocal(contentState);
     this.setState({
       editorState
     });
-    // console.log(this.getTextArrayFromEditor());
+    // console.log("change!");
+    this.spellCheck();
   };
 
   render() {
     return (
       <div>
-        <Header />
+        <Header note_title={this.state.note_title} />
         <div className="editor-area">
+          <div className="editor-assistant">
+            <List
+              // header={AssistantHeader}
+              // footer={AssistantFooter}
+              bordered
+              dataSource={this.state.spellCheckList}
+              loading={this.state.loading}
+              locale={{ emptyText: "暂无错误" }}
+              renderItem={item => (
+                <List.Item key={item.key}>
+                  <p>type: {item.type}</p>
+                  <p>shortMessage: {item.shortMessage}</p>
+                  <p>
+                    {item.errorValue}=>{item.replaceValue}
+                  </p>
+                </List.Item>
+              )}
+            />
+          </div>
           <div className="editor-content">
             <div className="editor-title-box">
               <input

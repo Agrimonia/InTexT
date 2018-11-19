@@ -12,7 +12,7 @@ import {
 const { Header, Content, Footer, Sider } = Layout;
 import NotesTable from "../components/notes-table";
 import history from "../history";
-
+import LoginState from "../store/LoginStateStore";
 import "../assets/Home.scss";
 
 // const SubMenu = Menu.SubMenu;
@@ -86,6 +86,9 @@ export default class Home extends React.Component {
         </Sider>
         <Layout>
           <Header>
+            <p className="welcome">
+              当前用户：{LoginState.username || "未登录"}
+            </p>
             <div className="button-container">
               <Button onClick={this.showModal} type="primary">
                 新建

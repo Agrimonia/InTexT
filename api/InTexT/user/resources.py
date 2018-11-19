@@ -53,7 +53,8 @@ class UserNotes(Resource):
         notes = []
         for note in note_list:
             notes.append({"global_id": note.global_id, "note_title": note.note_title, "template": note.template,
-                           "create_time": str(note.create_time), "update_time": str(note.update_time)})
+                          "create_time": str(note.create_time), "update_time": str(note.update_time),
+                          "is_del": str(note.is_del)})
         if note_list:
             return {'notes': notes}
         else:

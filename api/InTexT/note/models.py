@@ -1,5 +1,15 @@
 from InTexT import db
-from datetime import datetime
+import time
+
+
+def get_time():
+    lt = time.localtime()
+    noon = time.strftime("%p", lt)
+    if noon == "PM":
+        st = time.strftime("%Y/%m/%d 下午%I:%M", lt)
+    else:
+        st = time.strftime("%Y/%m/%d 上午%I:%M", lt)
+    return st
 
 
 class Note(db.Model):
@@ -21,27 +31,27 @@ class Note(db.Model):
         self.content = args['content']
         self.global_id = args['global_id']
         self.template = args['template']
-        self.create_time = datetime.now()
-        self.update_time = datetime.now()
+        self.create_time = get_time()
+        self.update_time = get_time()
         self.is_del = 0
 
         db.session.add(self)
         db.session.commit()
 
-    def delete(args):
+    def delete(self, args):
         note = Note.query.filter_by(global_id=args['global_id']).first()
+        # print(args['global_id'])
         note.is_del = 1
 
         db.session.commit()
 
-    def update(args):
+    def update(self, args):
         note = Note.query.filter_by(global_id=args['global_id']).first()
-        if args['content']:
+        if 'content' in args:
             note.content = args['content']
-        if args['note_title']:
+        if 'note_title' in args:
             note.note_title = args['note_title']
-        note.update_time = datetime.now()
-
+        note.update_time = get_time()
         db.session.commit()
 
     def getnote(self, global_id):

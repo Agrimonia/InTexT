@@ -4,17 +4,9 @@ import { NavLink } from "react-router-dom";
 import "../assets/editor-header.scss";
 
 export default class Header extends React.Component {
-  constructor() {
-    super();
-    this.state = { loading: false, title: "" };
+  constructor(props) {
+    super(props);
   }
-  enterLoading = () => {
-    this.setState({ loading: true });
-    // check();
-
-    // this.setState({ loading: false});
-  };
-
   render() {
     const exportMenu = (
       <Menu>
@@ -34,7 +26,8 @@ export default class Header extends React.Component {
             <Button shape="circle" icon="export" />
           </Dropdown>
         </span>
-        <span className="header-button-right">
+        <span className="header-title">{this.props.note_title}</span>
+        {/* <span className="header-button-right">
           <Button
             type="primary"
             loading={this.state.loading}
@@ -42,7 +35,7 @@ export default class Header extends React.Component {
           >
             Check
           </Button>
-        </span>
+        </span> */}
       </div>
     );
   }

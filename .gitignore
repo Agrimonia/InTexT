@@ -9,3 +9,4 @@ __pycache__
 python3
 venv
 api/InTexT/db.sqlite
+.vscode
