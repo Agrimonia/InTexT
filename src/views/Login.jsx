@@ -1,19 +1,34 @@
 import React from "react";
-
 import { Form, Icon, Input, Button, Checkbox } from "antd";
-
+import { APIClinet } from "../utils/client.js";
+import { withRouter } from "react-router-dom";
+import LoginState from "../store/LoginStateStore";
 import "../assets/Login.scss";
 
 class Login extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+    this.state = {
+      errored: false
+    };
   }
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        this.props.login(values);
+        APIClinet.post("/login/", values)
+          .then(response => {
+            LoginState.token = response.data.token;
+            LoginState.username = values.username;
+            this.props.history.push("/home");
+          })
+          .catch(error => {
+            this.setState({
+              errored: true
+            });
+            console.log("响应失败:", error);
+          });
       }
     });
   };
@@ -28,7 +43,7 @@ class Login extends React.Component {
           })(
             <Input
               prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
-              placeholder="Username"
+              placeholder="testuser"
             />
           )}
         </Form.Item>
@@ -39,14 +54,11 @@ class Login extends React.Component {
             <Input
               prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
               type="password"
-              placeholder="Password"
+              placeholder="123456"
             />
           )}
         </Form.Item>
         <Form.Item>
-          <a className="login-form-forgot" href="">
-            忘记密码
-          </a>
           <Button
             type="primary"
             htmlType="submit"
@@ -54,7 +66,9 @@ class Login extends React.Component {
           >
             登录
           </Button>
-          Or <a href="">注册新账号</a>
+          {this.state.errored ? (
+            <p className="errorInfo">用户名或密码错误！</p>
+          ) : null}
         </Form.Item>
       </Form>
     );
@@ -73,4 +87,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default withRouter(LoginPage);
