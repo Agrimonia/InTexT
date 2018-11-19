@@ -26,10 +26,10 @@ class NoteUpdate(Resource):
     def post(self):
         args = {}
         args['global_id'] = request.form.json.get('global_id', False)
-        args['note_title'] = request.json.get('note_title', False)
-        args['author'] = request.json.get('author', False)
-        args['content'] = request.json.get('content', False)
-
+        if request.json.get('content', False):
+            args['content'] = request.json.get('content', False)
+        if request.json.get('note_title', False):
+            args['note_title'] = request.json.get('note_title', False)
         note = Note()
         try:
             note.update(args)

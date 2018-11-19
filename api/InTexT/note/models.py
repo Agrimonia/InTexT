@@ -35,8 +35,10 @@ class Note(db.Model):
 
     def update(args):
         note = Note.query.filter_by(global_id=args['global_id']).first()
-        note.content = args['content']
-        note.note_title = args['note_title']
+        if args['content']:
+            note.content = args['content']
+        if args['note_title']:
+            note.note_title = args['note_title']
         note.update_time = datetime.now()
 
         db.session.commit()
