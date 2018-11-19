@@ -1,37 +1,47 @@
 import React from "react";
 import { Card, Icon } from "antd";
-
+import Loading from "./loading";
+import { APIClient } from "../utils/client";
 import "../assets/documents.scss";
 
 export default class Documents extends React.Component {
   constructor() {
     super();
     this.state = {
-      noteTitle: "无标题",
-      outLine: "helloworld",
-      updateTime: new Date().toLocaleDateString()
+      notes: [],
+      loading: true
     };
   }
 
+  componentDidMount() {
+    APIClient.get("/note_list/")
+      .then(response => {
+        const notes = response.data;
+        this.setState({
+          notes: notes
+        });
+      })
+      .catch(error => {
+        console.log("获取文章数据失败", error);
+      });
+  }
+
   render() {
-    const list = [1, 2, 3, 4, 5, 6];
-    const papers = list.map(() => {
+    if (this.state.loading) {
+      return <Loading />;
+    } else {
+      const Papers = this.state.notes.map(note => {
+        return <Paper note={note} />;
+      });
       return (
-        <Paper
-          noteTitle={this.state.noteTitle}
-          outLine={this.state.outLine}
-          updateTime={this.state.updateTime}
-        />
+        <div className="documents-container">
+          <Card id="new-doc">
+            <Icon type="plus" />
+          </Card>
+          {Papers}
+        </div>
       );
-    });
-    return (
-      <div className="documents-container">
-        <Card id="new-doc">
-          <Icon type="plus" />
-        </Card>
-        {papers}
-      </div>
-    );
+    }
   }
 }
 

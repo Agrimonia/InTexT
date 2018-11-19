@@ -6,9 +6,10 @@ const { Header, Content, Footer, Sider } = Layout;
 
 // const SubMenu = Menu.SubMenu;
 export default class Home extends React.Component {
-  state = {
-    collapsed: false
-  };
+  constructor() {
+    super();
+    this.state = {};
+  }
 
   onCollapse = collapsed => {
     console.log(collapsed);

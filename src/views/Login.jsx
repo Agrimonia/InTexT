@@ -6,8 +6,8 @@ import LoginState from "../store/LoginStateStore";
 import "../assets/Login.scss";
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       errored: false
     };
