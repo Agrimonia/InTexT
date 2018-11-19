@@ -17,11 +17,19 @@ export default class NotesTable extends React.Component {
   componentDidMount() {
     this.getNoteList();
   }
-
+  timeSort = (a, b) => {
+    a = a.slice(0, 10);
+    b = b.slice(0, 10);
+    const timestamp_a = new Date(a);
+    const timestamp_b = new Date(b);
+    return timestamp_a - timestamp_b;
+  };
   getNoteList = () => {
     APIClient.get("/note_list")
       .then(response => {
-        const notes = response.data.notes;
+        const notes = response.data.notes.filter(note => {
+          return note.is_del == "False";
+        });
         console.log(notes);
         this.setState({
           notes: notes,
@@ -37,7 +45,7 @@ export default class NotesTable extends React.Component {
     this.setState({
       loading: true
     });
-    APIClient.post("/note/delete", global_id)
+    APIClient.post("/note/delete", { global_id: global_id })
       .then(this.getNoteList())
       .catch(error => {
         console.log("删除文章失败", error);
@@ -66,9 +74,13 @@ export default class NotesTable extends React.Component {
             </NavLink>
           )}
         />
-        <Column title="作者" dataIndex="author" key="author" />
         <Column title="模板" dataIndex="template" key="template" />
-        <Column title="修改时间" dataIndex="update_time" key="update_time" />
+        <Column
+          title="修改时间"
+          dataIndex="update_time"
+          key="update_time"
+          sorter={this.timeSort}
+        />
         <Column
           title="操作"
           dataIndex="global_id"

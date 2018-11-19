@@ -6,7 +6,7 @@ import {
   convertFromRaw,
   RichUtils
 } from "draft-js";
-
+import { Affix, List } from "antd";
 import Header from "../components/editor-header";
 import { generateNoteID } from "../utils/id";
 import localforage from "localforage";
@@ -18,19 +18,26 @@ export default class EditorPage extends React.Component {
   constructor() {
     super();
     this.state = {
+      top: 50,
       note_title: "无标题",
       template: "默认",
-      editorState: EditorState.createEmpty(),
       global_id: "",
-      author: LoginState.username
+      author: LoginState.username,
+      editorState: EditorState.createEmpty(),
+      loading: false,
+      spellCheckList: [
+        "Racing car sprays burning fuel into crowd.",
+        "Japanese princess to wed commoner.",
+        "Australian walks 100km after outback crash.",
+        "Man charged over missing wedding girl.",
+        "Los Angeles battles huge wildfires."
+      ]
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
-    console.log(this.state);
   }
 
   componentDidMount() {
-    console.log(this.props.location.state.template);
     if (this.props.location.state.hasOwnProperty("global_id")) {
       this.setState(
         {
@@ -57,7 +64,8 @@ export default class EditorPage extends React.Component {
           APIClient.post("/note/create", {
             global_id: this.state.global_id,
             template: this.state.template,
-            note_title: ""
+            note_title: this.state.note_title,
+            author: this.state.author
           });
         }
       );
@@ -137,8 +145,21 @@ export default class EditorPage extends React.Component {
   render() {
     return (
       <div>
-        <Header />
+        <Header note_title={this.state.note_title} />
         <div className="editor-area">
+          <div className="editor-assistant">
+            <Affix offsetTop={this.state.top}>
+              <List
+                // header={AssistantHeader}
+                // footer={AssistantFooter}
+                bordered
+                dataSource={this.state.spellCheckList}
+                loading={this.state.loading}
+                locale={{ emptyText: "暂无错误" }}
+                renderItem={item => <List.Item>{item}</List.Item>}
+              />
+            </Affix>
+          </div>
           <div className="editor-content">
             <div className="editor-title-box">
               <input
