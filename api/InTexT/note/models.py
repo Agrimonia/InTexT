@@ -22,6 +22,7 @@ class Note(db.Model):
         self.global_id = args['global_id']
         self.template = args['template']
         self.create_time = datetime.now()
+        self.update_time = datetime.now()
         self.is_del = 0
 
         db.session.add(self)
