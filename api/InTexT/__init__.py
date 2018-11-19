@@ -11,7 +11,8 @@ app.config.from_pyfile('config.py')
 app.config['RESTFUL_API_DOC_EXCLUDE'] = []
 api = Api(app)
 ApiDoc(app)
-CORS(app, allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"])
+CORS(app, supports_credentials=True,
+     allow_headers=["Content-Type", "Authorization", "Access-Control-Allow-Credentials"])
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)

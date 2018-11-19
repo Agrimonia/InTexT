@@ -50,12 +50,11 @@ class UserNotes(Resource):
     def get(self):
         note_list = current_user.user_notes.all()
         print(current_user.user_notes)
-        notes = {}
+        notes = []
         for note in note_list:
-            name = note.global_id
-            notes[name] = {"global_id": note.global_id, "note_title": note.note_title, "template": note.template,
-                           "create_time": str(note.create_time), "update_time": str(note.update_time)}
+            notes.append({"global_id": note.global_id, "note_title": note.note_title, "template": note.template,
+                           "create_time": str(note.create_time), "update_time": str(note.update_time)})
         if note_list:
-            return notes
+            return {'note': notes}
         else:
             return {'message': 'Something went wrong'}, 500
