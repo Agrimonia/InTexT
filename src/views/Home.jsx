@@ -1,6 +1,6 @@
 import React from "react";
-import { Layout, Menu, Breadcrumb, Icon } from "antd";
-import Documents from "../components/documents";
+import { Layout, Menu, Icon } from "antd";
+import NotesTable from "../components/notes-table";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -43,7 +43,7 @@ export default class Home extends React.Component {
         <Layout>
           <Header style={{ background: "#fff", padding: 0 }} />
           <Content>
-            <Documents />
+            <NotesTable />
           </Content>
           <Footer style={{ textAlign: "center" }}>
             InTexT ©2018 Created by JoTang
