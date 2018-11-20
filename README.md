@@ -8,7 +8,7 @@ InTexT (Intelligent text editor) 是由 JoTang 开发的一款专注于智能化
 
 ## 在线演示
 
-[Demo](https://intext.jotang.party）
+[Demo](https://intext.jotang.party)
 
 ## 开发环境
 
