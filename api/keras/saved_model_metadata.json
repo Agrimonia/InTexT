@@ -1,0 +1,114 @@
+[
+  {
+    "layer_name": "embedding_1",
+    "weight_name": "embedding_1/embeddings:0",
+    "offset": 0,
+    "length": 20000,
+    "shape": [2000, 10],
+    "type": "float32"
+  },
+  {
+    "layer_name": "dense_1",
+    "weight_name": "dense_1/kernel:0",
+    "offset": 80000,
+    "length": 1000,
+    "shape": [10, 100],
+    "type": "float32"
+  },
+  {
+    "layer_name": "dense_1",
+    "weight_name": "dense_1/bias:0",
+    "offset": 84000,
+    "length": 100,
+    "shape": [100],
+    "type": "float32"
+  },
+  {
+    "layer_name": "lstm_1",
+    "weight_name": "lstm_1/kernel:0",
+    "offset": 84400,
+    "length": 20000,
+    "shape": [100, 200],
+    "type": "float32"
+  },
+  {
+    "layer_name": "lstm_1",
+    "weight_name": "lstm_1/recurrent_kernel:0",
+    "offset": 164400,
+    "length": 10000,
+    "shape": [50, 200],
+    "type": "float32"
+  },
+  {
+    "layer_name": "lstm_1",
+    "weight_name": "lstm_1/bias:0",
+    "offset": 204400,
+    "length": 200,
+    "shape": [200],
+    "type": "float32"
+  },
+  {
+    "layer_name": "dense_2",
+    "weight_name": "dense_2/kernel:0",
+    "offset": 205200,
+    "length": 500,
+    "shape": [50, 10],
+    "type": "float32"
+  },
+  {
+    "layer_name": "dense_2",
+    "weight_name": "dense_2/bias:0",
+    "offset": 207200,
+    "length": 10,
+    "shape": [10],
+    "type": "float32"
+  },
+  {
+    "layer_name": "batch_normalization_1",
+    "weight_name": "batch_normalization_1/gamma:0",
+    "offset": 207240,
+    "length": 10,
+    "shape": [10],
+    "type": "float32"
+  },
+  {
+    "layer_name": "batch_normalization_1",
+    "weight_name": "batch_normalization_1/beta:0",
+    "offset": 207280,
+    "length": 10,
+    "shape": [10],
+    "type": "float32"
+  },
+  {
+    "layer_name": "batch_normalization_1",
+    "weight_name": "batch_normalization_1/moving_mean:0",
+    "offset": 207320,
+    "length": 10,
+    "shape": [10],
+    "type": "float32"
+  },
+  {
+    "layer_name": "batch_normalization_1",
+    "weight_name": "batch_normalization_1/moving_variance:0",
+    "offset": 207360,
+    "length": 10,
+    "shape": [10],
+    "type": "float32"
+  },
+  {
+    "layer_name": "dense_3",
+    "weight_name": "dense_3/kernel:0",
+    "offset": 207400,
+    "length": 10,
+    "shape": [10, 1],
+    "type": "float32"
+  },
+  {
+    "layer_name": "dense_3",
+    "weight_name": "dense_3/bias:0",
+    "offset": 207440,
+    "length": 1,
+    "shape": [1],
+    "type": "float32"
+  }
+]
