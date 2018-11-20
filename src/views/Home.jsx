@@ -39,6 +39,10 @@ export default class Home extends React.Component {
     });
   };
 
+  handleLogout = () => {
+    history.push("/login");
+  };
+
   onChange = value => {
     const valueStr = value.reduce((a, b) => `${a}/${b}`);
     this.setState(
@@ -80,7 +84,7 @@ export default class Home extends React.Component {
             </Menu.Item>
             <Menu.Item key="3">
               <Icon type="logout" />
-              <span>登出</span>
+              <span onClick={this.handleLogout}>登出</span>
             </Menu.Item>
           </Menu>
         </Sider>
