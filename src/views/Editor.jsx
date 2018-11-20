@@ -73,15 +73,15 @@ export default class EditorPage extends React.Component {
     this.contentRef = React.createRef();
   }
 
-  componentWillMount() {
-    // 加载模型
-    this.model = new KerasJS.Model({
-      filepath: MODEL_FILEPATH_PROD,
-      gpu: false
-    });
-    this.model.events.on("loadingProgress", this.handleLoadingProgress);
-    this.model.events.on("initProgress", this.handleInitProgress);
-  }
+  // componentWillMount() {
+  //   // 加载模型
+  //   this.model = new KerasJS.Model({
+  //     filepath: MODEL_FILEPATH_PROD,
+  //     gpu: false
+  //   });
+  //   this.model.events.on("loadingProgress", this.handleLoadingProgress);
+  //   this.model.events.on("initProgress", this.handleInitProgress);
+  // }
   componentDidMount() {
     // 从路由参数获取文章属性
     if (this.props.location.state.hasOwnProperty("global_id")) {
@@ -140,11 +140,11 @@ export default class EditorPage extends React.Component {
   //   }
   // }
 
-  componentWillUnmount() {
-    // 清理模型
-    this.model.cleanup();
-    this.model.events.removeAllListeners();
-  }
+  // componentWillUnmount() {
+  //   // 清理模型
+  //   this.model.cleanup();
+  //   this.model.events.removeAllListeners();
+  // }
 
   focus = e => this.refs.editor.focus();
 
@@ -158,6 +158,7 @@ export default class EditorPage extends React.Component {
       });
     });
   };
+
   saveContentToLocal = content => {
     localforage.setItem(
       this.state.global_id,
