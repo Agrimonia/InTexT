@@ -4,6 +4,7 @@ import {
   EditorState,
   convertToRaw,
   convertFromRaw,
+  CompositeDecorator,
   RichUtils
 } from "draft-js";
 import { List } from "antd";
@@ -13,8 +14,41 @@ import localforage from "localforage";
 import LoginState from "../store/LoginStateStore";
 import languagetool from "languagetool-api";
 import debounce from "lodash.debounce";
+import {
+  METADATA_URL_DEV,
+  WEIGHT_URL_DEV,
+  WORDINDEX_URL_DEV
+} from "../predict/next-sentence";
+import KerasJS from "keras-js";
 import "../assets/Editor.scss";
 import { APIClient } from "../utils/client";
+
+const WarningUnderline = props => (
+  <span className="warning-text">{props.children}</span>
+);
+
+const spellStrategy = (contentBlock, callback) => {
+  const text = contentBlock.getText();
+  console.log(text);
+  const regex = new RegExp(text, "g");
+  let matchArr, start, end;
+  while ((matchArr = regex.exec(text)) !== null) {
+    start = matchArr.index;
+    end = start + matchArr[0].length;
+    console.log("start:", start);
+    console.log("start:", end);
+    callback(start, end);
+  }
+};
+
+const generateDecorator = errorValue => {
+  return new CompositeDecorator([
+    {
+      strategy: spellStrategy,
+      component: WarningUnderline
+    }
+  ]);
+};
 
 export default class EditorPage extends React.Component {
   constructor() {
@@ -27,13 +61,29 @@ export default class EditorPage extends React.Component {
       editorState: EditorState.createEmpty(),
       loading: false,
       language: "zh-CN",
-      spellCheckList: []
+      spellCheckList: [],
+      // model
+      modelLoading: true,
+      modelLoadingProgress: 0,
+      modelInitializing: true,
+      modelInitProgress: 0,
+      modelRunning: false
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
   }
 
+  componentWillMount() {
+    // 加载模型
+    this.model = new KerasJS.Model({
+      filepath: MODEL_FILEPATH_PROD,
+      gpu: false
+    });
+    this.model.events.on("loadingProgress", this.handleLoadingProgress);
+    this.model.events.on("initProgress", this.handleInitProgress);
+  }
   componentDidMount() {
+    // 从路由参数获取文章属性
     if (this.props.location.state.hasOwnProperty("global_id")) {
       this.setState(
         {
@@ -66,6 +116,7 @@ export default class EditorPage extends React.Component {
         }
       );
     }
+    // 判断拼写检查的语言
     if (this.props.location.state.template.startsWith("En")) {
       this.setState({
         language: "en-US"
@@ -75,6 +126,24 @@ export default class EditorPage extends React.Component {
         language: "zh-CN"
       });
     }
+    this.loadData();
+  }
+  // 给拼写检查的结果加装饰器
+  // componentDidUpdate() {
+  //   const list = this.state.spellCheckList;
+  //   for (let i = 0; i < list.length; i++) {
+  //     this.setState({
+  //       editorState: EditorState.set(this.state.editorState, {
+  //         decorator: generateDecorator(list[i].errorValue)
+  //       })
+  //     });
+  //   }
+  // }
+
+  componentWillUnmount() {
+    // 清理模型
+    this.model.cleanup();
+    this.model.events.removeAllListeners();
   }
 
   focus = e => this.refs.editor.focus();
@@ -154,6 +223,8 @@ export default class EditorPage extends React.Component {
               type: match.rule.category.name,
               message: match.message,
               shortMessage: match.shortMessage,
+              start: match.offset,
+              end: match.offset + match.length,
               errorValue: match.context.text.slice(
                 match.offset,
                 match.offset + match.length
@@ -174,11 +245,13 @@ export default class EditorPage extends React.Component {
   onChange = editorState => {
     const contentState = editorState.getCurrentContent();
     this.saveContentToLocal(contentState);
+    // console.log("change!");
+    // if (editorState.getCurrentContent().getPlainText() !== this.state.editorState.getCurrentContent().getPlainText()) {
+    //   this.spellCheck();
+    // }
     this.setState({
       editorState
     });
-    // console.log("change!");
-    this.spellCheck();
   };
 
   render() {
