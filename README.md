@@ -4,34 +4,34 @@ InTexT is an intelligent text editor by JoTang.
 
 ## 开发环境
 
-建议先安装 [yarn](https://yarnpkg.com/zh-Hans/docs/install) 作为包管理器。
+~~建议先安装 [yarn](https://yarnpkg.com/zh-Hans/docs/install) 作为包管理器。~~
 
-### 运行
+### 本地测试
 
 #### 前端运行
 
 ```bash
-git clone
-
+git clone git@git.swcontest.cn:swc_20180117/intext.git
 cd intext
-
 yarn
-
 yarn dev
-
+```
+
+#### landing_page
+
+```bash
+cd landing_page
+npm install
+gulp dev
 ```
 
 #### 后端运行
 
 ```bash
-建议先进入虚拟环境
-
+# 建议先进入虚拟环境
 cd api
-
 pip install -r requirements
-
 python manage.py db_create
-
 python run.py
 
 ```
