@@ -3,3 +3,10 @@ node_modules
 dist
 .cache
 *.log
+instance
+__pycache__
+.idea
+python3
+venv
+api/InTexT/db.sqlite
+.vscode
