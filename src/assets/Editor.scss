@@ -41,3 +41,8 @@
     line-height: 2rem;
   }
 }
+.warning-text {
+  padding-bottom: 1px;
+  border-bottom: 3px solid #faaab6;
+  transition: border-bottom-color 0.5s linear;
+}
