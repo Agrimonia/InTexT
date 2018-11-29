@@ -3,6 +3,7 @@
 InTexT (Intelligent text editor) 是由 JoTang 开发的一款专注于智能化内容生产的文档工具。
 
 主要技术栈：
+
 - 前端：`React` + `Mobx` + `Keras.js`
 - 后端：`Flask` + `MySQL`
 
@@ -19,7 +20,7 @@ InTexT (Intelligent text editor) 是由 JoTang 开发的一款专注于智能化
 #### 前端运行
 
 ```bash
-git clone git@git.swcontest.cn:swc_20180117/intext.git
+git clone git@github.com:Agrimonia/InTexT.git
 
 cd intext
 
@@ -45,10 +46,11 @@ gulp dev
 
 ```bash
 # ./intext
-# 建议先进入虚拟环境，这里以 virtualenv 为例：source venv/bin/activate
-
+# 建议先进入虚拟环境，这里以 virtualenv 为例：
 
 cd api
+
+# source venv/bin/activate
 
 pip install -r requirements.txt
 
@@ -75,5 +77,3 @@ Visual Studio Code
 其他编辑器
 
 见 Prettier 文档：https://prettier.io/docs/en/editors.html
-
-
