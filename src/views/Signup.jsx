@@ -30,12 +30,15 @@ class Signup extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log("Received values of form: ", values);
-        APIClient.post("/Signup", values)
+        APIClient.post("/register", values)
           .then(response => {
-            console.log("响应成功");
-            history.push("/home");
+            console.log(response);
+            alert("注册成功，请登录");
+            history.push("/login");
           })
           .catch(error => {
+            console.log(response);
+            alert("注册失败");
             console.log("响应失败:", error); //用户名唯一存在问题
           });
       }
@@ -144,7 +147,7 @@ class Signup extends React.Component {
             </span>
           }
         >
-          {getFieldDecorator("请输入用户名", {
+          {getFieldDecorator("username", {
             rules: [
               { required: true, message: "请输入你的用户名", whitespace: false }
             ]
