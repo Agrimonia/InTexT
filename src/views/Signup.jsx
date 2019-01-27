@@ -137,7 +137,7 @@ class Signup extends React.Component {
           {...formItemLayout}
           label={
             <span>
-              Nickname&nbsp;
+              用户名&nbsp;
               <Tooltip title="你想让别人怎么称呼你呢？">
                 <Icon type="question-circle-o" />
               </Tooltip>
@@ -149,22 +149,6 @@ class Signup extends React.Component {
               { required: true, message: "请输入你的用户名", whitespace: false }
             ]
           })(<Input />)}
-        </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label="Captcha"
-          extra="我们必须确保你是人类（万一外星人呢QAQ）."
-        >
-          <Row gutter={8}>
-            <Col span={12}>
-              {getFieldDecorator("请输入验证码", {
-                rules: [{ required: true, message: "请输入验证码" }]
-              })(<Input />)}
-            </Col>
-            <Col span={12}>
-              <Button>获取验证码</Button>
-            </Col>
-          </Row>
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
           {getFieldDecorator("agreement", {
