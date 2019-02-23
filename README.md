@@ -21,13 +21,9 @@ InTexT (Intelligent text editor) 是由 JoTang 开发的一款专注于智能化
 
 ```bash
 git clone git@github.com:Agrimonia/InTexT.git
-
 cd intext
-
 yarn # or npm i
-
 yarn dev # or npm run dev
-
 ```
 
 #### landing_page
@@ -35,31 +31,28 @@ yarn dev # or npm run dev
 ```bash
 # ./intext
 cd landing_page
-
 npm install
-
 gulp dev
-
 ```
 
 #### 后端运行
 
+
+建议进入虚拟环境，以 conda 为例：
+
+1. 下载地址推荐：<https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/>
+2. 安装完成后，进入 cmd 输入：
+   `conda create -n intext python=3.7`
+3. 进入编辑器，输入：
+   `activate intext`
+
 ```bash
 # ./intext
-# 建议先进入虚拟环境，这里以 virtualenv 为例：
-
 cd api
 
-# source venv/bin/activate
-
 pip install -r requirements.txt
-
 python manage.py db_create
-
 python run.py
-
-
-
 ```
 
 ## 团队配置
@@ -76,4 +69,5 @@ Visual Studio Code
 
 其他编辑器
 
-见 Prettier 文档：https://prettier.io/docs/en/editors.html
+见 Prettier 文档：<https://prettier.io/docs/en/editors.html>
+
