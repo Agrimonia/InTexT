@@ -6,7 +6,17 @@ import "../assets/editor-header.scss";
 export default class Header extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      spellcheck: false
+    };
   }
+
+  handleToolMenuClick = ({ key }) => {
+    if (key === "SPELLCHECK") {
+      this.setState({ spellcheck: !this.state.spellcheck });
+    }
+  };
+
   render() {
     const exportMenu = (
       <Menu>
@@ -16,6 +26,23 @@ export default class Header extends React.Component {
         <Menu.Item key="PDF">导出为 PDF</Menu.Item>
       </Menu>
     );
+
+    const toolMenu = (
+      <Menu onClick={this.handleToolMenuClick}>
+        <Menu.Item key="SPELLCHECK">
+          {this.state.spellcheck ? (
+            <span>智能纠错</span>
+          ) : (
+            <>
+              <Icon type="check" />
+              <span>智能纠错</span>
+            </>
+          )}
+        </Menu.Item>
+        <Menu.Item disabled>智能建议</Menu.Item>
+      </Menu>
+    );
+
     return (
       <div className="header-bar">
         <span className="header-button-left">
@@ -24,6 +51,9 @@ export default class Header extends React.Component {
           </NavLink>
           <Dropdown overlay={exportMenu} placement="topLeft">
             <Button shape="circle" icon="export" />
+          </Dropdown>
+          <Dropdown overlay={toolMenu} placement="topLeft">
+            <Button shape="circle" icon="tool" />
           </Dropdown>
         </span>
         <span className="header-title">{this.props.note_title}</span>
