@@ -1,0 +1,779 @@
+{
+  "software": {
+    "name": "LanguageTool",
+    "version": "4.5-SNAPSHOT",
+    "buildDate": "2019-02-23 21:01",
+    "apiVersion": 1,
+    "premium": false,
+    "premiumHint": "You might be missing errors only the Premium version can find. Contact us at support<at>languagetoolplus.com.",
+    "status": ""
+  },
+  "warnings": {
+    "incompleteResults": false
+  },
+  "language": {
+    "name": "English (US)",
+    "code": "en-US",
+    "detectedLanguage": {
+      "name": "English (US)",
+      "code": "en-US",
+      "confidence": 0.99
+    }
+  },
+  "matches": [
+    {
+      "message": "Use a smart opening quote here: \"“\".",
+      "shortMessage": "Use smart quotes",
+      "replacements": [
+        {
+          "value": "“"
+        }
+      ],
+      "offset": 0,
+      "length": 1,
+      "context": {
+        "text": "\"Landlord!\" said I, \"what sort of chap is...",
+        "offset": 0,
+        "length": 1
+      },
+      "sentence": "\"Landlord!\" said I, \"what sort of chap is he -- does he always keep such late hours?\"",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_QUOTES",
+        "subId": "1",
+        "description": "Smart quotes (“”)",
+        "issueType": "typographical",
+        "urls": [
+          {
+            "value": "https://en.wikipedia.org/wiki/Smart_quote#Electronic_documents"
+          }
+        ],
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Use a smart closing quote here: \"”\".",
+      "shortMessage": "Use smart quotes",
+      "replacements": [
+        {
+          "value": "”"
+        }
+      ],
+      "offset": 10,
+      "length": 1,
+      "context": {
+        "text": "\"Landlord!\" said I, \"what sort of chap is he -- doe...",
+        "offset": 10,
+        "length": 1
+      },
+      "sentence": "\"Landlord!\" said I, \"what sort of chap is he -- does he always keep such late hours?\"",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_QUOTES",
+        "subId": "2",
+        "description": "Smart quotes (“”)",
+        "issueType": "typographical",
+        "urls": [
+          {
+            "value": "https://en.wikipedia.org/wiki/Smart_quote#Electronic_documents"
+          }
+        ],
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Use a smart opening quote here: \"“\".",
+      "shortMessage": "Use smart quotes",
+      "replacements": [
+        {
+          "value": "“"
+        }
+      ],
+      "offset": 20,
+      "length": 1,
+      "context": {
+        "text": "\"Landlord!\" said I, \"what sort of chap is he -- does he alway...",
+        "offset": 20,
+        "length": 1
+      },
+      "sentence": "\"Landlord!\" said I, \"what sort of chap is he -- does he always keep such late hours?\"",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_QUOTES",
+        "subId": "1",
+        "description": "Smart quotes (“”)",
+        "issueType": "typographical",
+        "urls": [
+          {
+            "value": "https://en.wikipedia.org/wiki/Smart_quote#Electronic_documents"
+          }
+        ],
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Use a smart closing quote here: \"”\".",
+      "shortMessage": "Use smart quotes",
+      "replacements": [
+        {
+          "value": "”"
+        }
+      ],
+      "offset": 84,
+      "length": 1,
+      "context": {
+        "text": "... -- does he always keep such late hours?\" It was now hard upon twelve o'clock.The...",
+        "offset": 43,
+        "length": 1
+      },
+      "sentence": "\"Landlord!\" said I, \"what sort of chap is he -- does he always keep such late hours?\"",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_QUOTES",
+        "subId": "2",
+        "description": "Smart quotes (“”)",
+        "issueType": "typographical",
+        "urls": [
+          {
+            "value": "https://en.wikipedia.org/wiki/Smart_quote#Electronic_documents"
+          }
+        ],
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Add a space between sentences",
+      "shortMessage": "",
+      "replacements": [
+        {
+          "value": " The"
+        }
+      ],
+      "offset": 122,
+      "length": 3,
+      "context": {
+        "text": "...s?\" It was now hard upon twelve o'clock.The landlord chuckled again with his lean c...",
+        "offset": 43,
+        "length": 3
+      },
+      "sentence": "The landlord chuckled again with his lean chuckle, and seemed to be mightily tickled at something beyond my comprehension.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "SENTENCE_WHITESPACE",
+        "description": "Missing space between sentences",
+        "issueType": "whitespace",
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Use a smart opening quote here: \"“\".",
+      "shortMessage": "Use smart quotes",
+      "replacements": [
+        {
+          "value": "“"
+        }
+      ],
+      "offset": 245,
+      "length": 1,
+      "context": {
+        "text": "...d at something beyond my comprehension. \"No,\" he answered, \"generally he's an ear...",
+        "offset": 43,
+        "length": 1
+      },
+      "sentence": "\"No,\" he answered, \"generally he's an early bird -- airley to bed and airley to rise -- yea, he's the bird what catches the worm.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_QUOTES",
+        "subId": "1",
+        "description": "Smart quotes (“”)",
+        "issueType": "typographical",
+        "urls": [
+          {
+            "value": "https://en.wikipedia.org/wiki/Smart_quote#Electronic_documents"
+          }
+        ],
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Use a smart closing quote here: \"”\".",
+      "shortMessage": "Use smart quotes",
+      "replacements": [
+        {
+          "value": "”"
+        }
+      ],
+      "offset": 249,
+      "length": 1,
+      "context": {
+        "text": "... something beyond my comprehension. \"No,\" he answered, \"generally he's an early b...",
+        "offset": 43,
+        "length": 1
+      },
+      "sentence": "\"No,\" he answered, \"generally he's an early bird -- airley to bed and airley to rise -- yea, he's the bird what catches the worm.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_QUOTES",
+        "subId": "2",
+        "description": "Smart quotes (“”)",
+        "issueType": "typographical",
+        "urls": [
+          {
+            "value": "https://en.wikipedia.org/wiki/Smart_quote#Electronic_documents"
+          }
+        ],
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Use a smart opening quote here: \"“\".",
+      "shortMessage": "Use smart quotes",
+      "replacements": [
+        {
+          "value": "“"
+        }
+      ],
+      "offset": 264,
+      "length": 1,
+      "context": {
+        "text": "...nd my comprehension. \"No,\" he answered, \"generally he's an early bird -- airley t...",
+        "offset": 43,
+        "length": 1
+      },
+      "sentence": "\"No,\" he answered, \"generally he's an early bird -- airley to bed and airley to rise -- yea, he's the bird what catches the worm.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_QUOTES",
+        "subId": "1",
+        "description": "Smart quotes (“”)",
+        "issueType": "typographical",
+        "urls": [
+          {
+            "value": "https://en.wikipedia.org/wiki/Smart_quote#Electronic_documents"
+          }
+        ],
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Possible spelling mistake found",
+      "shortMessage": "Spelling mistake",
+      "replacements": [
+        {
+          "value": "early"
+        },
+        {
+          "value": "arena"
+        },
+        {
+          "value": "barley",
+          "shortDescription": "cereal grain"
+        },
+        {
+          "value": "airway"
+        },
+        {
+          "value": "Harley"
+        },
+        {
+          "value": "Carla"
+        },
+        {
+          "value": "Earle"
+        },
+        {
+          "value": "Farley"
+        },
+        {
+          "value": "Marley"
+        },
+        {
+          "value": "Karla"
+        },
+        {
+          "value": "Adela"
+        },
+        {
+          "value": "Darla"
+        },
+        {
+          "value": "Marla"
+        },
+        {
+          "value": "parley"
+        }
+      ],
+      "offset": 297,
+      "length": 6,
+      "context": {
+        "text": "...wered, \"generally he's an early bird -- airley to bed and airley to rise -- yea, he's ...",
+        "offset": 43,
+        "length": 6
+      },
+      "sentence": "\"No,\" he answered, \"generally he's an early bird -- airley to bed and airley to rise -- yea, he's the bird what catches the worm.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "MORFOLOGIK_RULE_EN_US",
+        "description": "Possible spelling mistake",
+        "issueType": "misspelling",
+        "category": {
+          "id": "TYPOS",
+          "name": "Possible Typo"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Possible spelling mistake found",
+      "shortMessage": "Spelling mistake",
+      "replacements": [
+        {
+          "value": "early"
+        },
+        {
+          "value": "arena"
+        },
+        {
+          "value": "barley",
+          "shortDescription": "cereal grain"
+        },
+        {
+          "value": "airway"
+        },
+        {
+          "value": "Harley"
+        },
+        {
+          "value": "Carla"
+        },
+        {
+          "value": "Earle"
+        },
+        {
+          "value": "Farley"
+        },
+        {
+          "value": "Marley"
+        },
+        {
+          "value": "Karla"
+        },
+        {
+          "value": "Adela"
+        },
+        {
+          "value": "Darla"
+        },
+        {
+          "value": "Marla"
+        },
+        {
+          "value": "parley"
+        }
+      ],
+      "offset": 315,
+      "length": 6,
+      "context": {
+        "text": "...he's an early bird -- airley to bed and airley to rise -- yea, he's the bird what catc...",
+        "offset": 43,
+        "length": 6
+      },
+      "sentence": "\"No,\" he answered, \"generally he's an early bird -- airley to bed and airley to rise -- yea, he's the bird what catches the worm.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "MORFOLOGIK_RULE_EN_US",
+        "description": "Possible spelling mistake",
+        "issueType": "misspelling",
+        "category": {
+          "id": "TYPOS",
+          "name": "Possible Typo"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Possible spelling mistake found",
+      "shortMessage": "Spelling mistake",
+      "replacements": [
+        {
+          "value": "earth"
+        },
+        {
+          "value": "birth",
+          "shortDescription": "act of bringing forth offsprings"
+        },
+        {
+          "value": "girth"
+        },
+        {
+          "value": "Gareth"
+        },
+        {
+          "value": "Garth"
+        },
+        {
+          "value": "earthy"
+        },
+        {
+          "value": "hearth"
+        },
+        {
+          "value": "Barth"
+        },
+        {
+          "value": "Darth"
+        },
+        {
+          "value": "dearth"
+        },
+        {
+          "value": "earths"
+        },
+        {
+          "value": "firth"
+        },
+        {
+          "value": "mirth"
+        }
+      ],
+      "offset": 448,
+      "length": 5,
+      "context": {
+        "text": "...dling, you see, and I don't see what on airth keeps him so late, unless, may be, he c...",
+        "offset": 43,
+        "length": 5
+      },
+      "sentence": "-- But to-night he went out a peddling, you see, and I don't see what on airth keeps him so late, unless, may be, he can't sell his head.\"\"",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "MORFOLOGIK_RULE_EN_US",
+        "description": "Possible spelling mistake",
+        "issueType": "misspelling",
+        "category": {
+          "id": "TYPOS",
+          "name": "Possible Typo"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Use a smart closing quote here: \"”\".",
+      "shortMessage": "Use smart quotes",
+      "replacements": [
+        {
+          "value": "”"
+        }
+      ],
+      "offset": 512,
+      "length": 1,
+      "context": {
+        "text": "... unless, may be, he can't sell his head.\"\"Can't sell his head? -- What sort of a ...",
+        "offset": 43,
+        "length": 1
+      },
+      "sentence": "-- But to-night he went out a peddling, you see, and I don't see what on airth keeps him so late, unless, may be, he can't sell his head.\"\"",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_QUOTES",
+        "subId": "2",
+        "description": "Smart quotes (“”)",
+        "issueType": "typographical",
+        "urls": [
+          {
+            "value": "https://en.wikipedia.org/wiki/Smart_quote#Electronic_documents"
+          }
+        ],
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Add a space between sentences",
+      "shortMessage": "",
+      "replacements": [
+        {
+          "value": " Can"
+        }
+      ],
+      "offset": 514,
+      "length": 3,
+      "context": {
+        "text": "...nless, may be, he can't sell his head.\"\"Can't sell his head? -- What sort of a bamb...",
+        "offset": 43,
+        "length": 3
+      },
+      "sentence": "Can't sell his head?",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "SENTENCE_WHITESPACE",
+        "description": "Missing space between sentences",
+        "issueType": "whitespace",
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Don't include 'a' after a classification term. Use simply \"sort of\".",
+      "shortMessage": "Grammatical problem: unnecessary 'a/an'",
+      "replacements": [
+        {
+          "value": "sort of"
+        }
+      ],
+      "offset": 543,
+      "length": 9,
+      "context": {
+        "text": "...his head.\"\"Can't sell his head? -- What sort of a bamboozingly story is this you are tell...",
+        "offset": 43,
+        "length": 9
+      },
+      "sentence": "-- What sort of a bamboozingly story is this you are telling me?\" getting into a towering rage.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "KIND_OF_A",
+        "subId": "1",
+        "description": "'kind/type/sort of a/an'",
+        "issueType": "grammar",
+        "category": {
+          "id": "GRAMMAR",
+          "name": "Grammar"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Possible spelling mistake found",
+      "shortMessage": "Spelling mistake",
+      "replacements": [
+        {
+          "value": "bamboozling"
+        }
+      ],
+      "offset": 553,
+      "length": 12,
+      "context": {
+        "text": "...\"Can't sell his head? -- What sort of a bamboozingly story is this you are telling me?\" gett...",
+        "offset": 43,
+        "length": 12
+      },
+      "sentence": "-- What sort of a bamboozingly story is this you are telling me?\" getting into a towering rage.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "MORFOLOGIK_RULE_EN_US",
+        "description": "Possible spelling mistake",
+        "issueType": "misspelling",
+        "category": {
+          "id": "TYPOS",
+          "name": "Possible Typo"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Use a smart closing quote here: \"”\".",
+      "shortMessage": "Use smart quotes",
+      "replacements": [
+        {
+          "value": "”"
+        }
+      ],
+      "offset": 599,
+      "length": 1,
+      "context": {
+        "text": "...zingly story is this you are telling me?\" getting into a towering rage. \"Do you p...",
+        "offset": 43,
+        "length": 1
+      },
+      "sentence": "-- What sort of a bamboozingly story is this you are telling me?\" getting into a towering rage.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_QUOTES",
+        "subId": "2",
+        "description": "Smart quotes (“”)",
+        "issueType": "typographical",
+        "urls": [
+          {
+            "value": "https://en.wikipedia.org/wiki/Smart_quote#Electronic_documents"
+          }
+        ],
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Use a smart opening quote here: \"“\".",
+      "shortMessage": "Use smart quotes",
+      "replacements": [
+        {
+          "value": "“"
+        }
+      ],
+      "offset": 631,
+      "length": 1,
+      "context": {
+        "text": "...ling me?\" getting into a towering rage. \"Do you pretend to say, landlord, that th...",
+        "offset": 43,
+        "length": 1
+      },
+      "sentence": "\"Do you pretend to say, landlord, that this harpooneer is actually engaged this blessed Saturday night, or rather Sunday morning, in peddling his head around this town?\"",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_QUOTES",
+        "subId": "1",
+        "description": "Smart quotes (“”)",
+        "issueType": "typographical",
+        "urls": [
+          {
+            "value": "https://en.wikipedia.org/wiki/Smart_quote#Electronic_documents"
+          }
+        ],
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Possible spelling mistake found",
+      "shortMessage": "Spelling mistake",
+      "replacements": [
+        {
+          "value": "harpooner"
+        }
+      ],
+      "offset": 675,
+      "length": 10,
+      "context": {
+        "text": "...you pretend to say, landlord, that this harpooneer is actually engaged this blessed Saturd...",
+        "offset": 43,
+        "length": 10
+      },
+      "sentence": "\"Do you pretend to say, landlord, that this harpooneer is actually engaged this blessed Saturday night, or rather Sunday morning, in peddling his head around this town?\"",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "MORFOLOGIK_RULE_EN_US",
+        "description": "Possible spelling mistake",
+        "issueType": "misspelling",
+        "category": {
+          "id": "TYPOS",
+          "name": "Possible Typo"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Use a smart closing quote here: \"”\".",
+      "shortMessage": "Use smart quotes",
+      "replacements": [
+        {
+          "value": "”"
+        }
+      ],
+      "offset": 799,
+      "length": 1,
+      "context": {
+        "text": "..., in peddling his head around this town?\"",
+        "offset": 43,
+        "length": 1
+      },
+      "sentence": "\"Do you pretend to say, landlord, that this harpooneer is actually engaged this blessed Saturday night, or rather Sunday morning, in peddling his head around this town?\"",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_QUOTES",
+        "subId": "2",
+        "description": "Smart quotes (“”)",
+        "issueType": "typographical",
+        "urls": [
+          {
+            "value": "https://en.wikipedia.org/wiki/Smart_quote#Electronic_documents"
+          }
+        ],
+        "category": {
+          "id": "TYPOGRAPHY",
+          "name": "Typography"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    }
+  ]
+}
