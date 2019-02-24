@@ -1,0 +1,297 @@
+{
+  "software": {
+    "name": "LanguageTool",
+    "version": "4.5-SNAPSHOT",
+    "buildDate": "2019-02-16 21:01",
+    "apiVersion": 1,
+    "premium": false,
+    "premiumHint": "You might be missing errors only the Premium version can find. Contact us at support<at>languagetoolplus.com.",
+    "status": ""
+  },
+  "warnings": {
+    "incompleteResults": false
+  },
+  "language": {
+    "name": "English (US)",
+    "code": "en-US",
+    "detectedLanguage": {
+      "name": "English (US)",
+      "code": "en-US",
+      "confidence": 0.99
+    }
+  },
+  "matches": [
+    {
+      "message": "This sentence does not start with an uppercase letter",
+      "shortMessage": "",
+      "replacements": [
+        {
+          "value": "Or"
+        }
+      ],
+      "offset": 168,
+      "length": 2,
+      "context": {
+        "text": "...hrases for details on potential errors. or use this text too see an few of of the ...",
+        "offset": 43,
+        "length": 2
+      },
+      "sentence": "or use this text too see an few of of the problems that LanguageTool can detecd.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "UPPERCASE_SENTENCE_START",
+        "description": "Checks that a sentence starts with an uppercase letter",
+        "issueType": "typographical",
+        "category": {
+          "id": "CASING",
+          "name": "Capitalization"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Did you mean \"to see\"?",
+      "shortMessage": "Possible typo",
+      "replacements": [
+        {
+          "value": "to see"
+        }
+      ],
+      "offset": 185,
+      "length": 7,
+      "context": {
+        "text": "...s on potential errors. or use this text too see an few of of the problems that Language...",
+        "offset": 43,
+        "length": 7
+      },
+      "sentence": "or use this text too see an few of of the problems that LanguageTool can detecd.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "TOO_TO",
+        "subId": "1",
+        "description": "too go (to go)",
+        "issueType": "misspelling",
+        "category": {
+          "id": "CONFUSED_WORDS",
+          "name": "Commonly Confused Words"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Use \"a\" instead of 'an' if the following word doesn't start with a vowel sound, e.g. 'a sentence', 'a university'",
+      "shortMessage": "Wrong article",
+      "replacements": [
+        {
+          "value": "a"
+        }
+      ],
+      "offset": 193,
+      "length": 2,
+      "context": {
+        "text": "...ential errors. or use this text too see an few of of the problems that LanguageToo...",
+        "offset": 43,
+        "length": 2
+      },
+      "sentence": "or use this text too see an few of of the problems that LanguageTool can detecd.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "EN_A_VS_AN",
+        "description": "Use of 'a' vs. 'an'",
+        "issueType": "misspelling",
+        "category": {
+          "id": "MISC",
+          "name": "Miscellaneous"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Possible typo: you repeated a word",
+      "shortMessage": "Word repetition",
+      "replacements": [
+        {
+          "value": "of"
+        }
+      ],
+      "offset": 200,
+      "length": 5,
+      "context": {
+        "text": "...errors. or use this text too see an few of of the problems that LanguageTool can dete...",
+        "offset": 43,
+        "length": 5
+      },
+      "sentence": "or use this text too see an few of of the problems that LanguageTool can detecd.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "ENGLISH_WORD_REPEAT_RULE",
+        "description": "Word repetition (e.g. 'will will')",
+        "issueType": "duplication",
+        "category": {
+          "id": "MISC",
+          "name": "Miscellaneous"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Possible spelling mistake found",
+      "shortMessage": "Spelling mistake",
+      "replacements": [
+        {
+          "value": "detect"
+        }
+      ],
+      "offset": 241,
+      "length": 6,
+      "context": {
+        "text": "...f of the problems that LanguageTool can detecd. What do you thinks of grammar checkers...",
+        "offset": 43,
+        "length": 6
+      },
+      "sentence": "or use this text too see an few of of the problems that LanguageTool can detecd.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "MORFOLOGIK_RULE_EN_US",
+        "description": "Possible spelling mistake",
+        "issueType": "misspelling",
+        "category": {
+          "id": "TYPOS",
+          "name": "Possible Typo"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Consider using the base form \"think\".",
+      "shortMessage": "",
+      "replacements": [
+        {
+          "value": "think",
+          "shortDescription": "usually a verb"
+        }
+      ],
+      "offset": 261,
+      "length": 6,
+      "context": {
+        "text": "...at LanguageTool can detecd. What do you thinks of grammar checkers? Please not that th...",
+        "offset": 43,
+        "length": 6
+      },
+      "sentence": "What do you thinks of grammar checkers?",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "DO_VBZ",
+        "subId": "1",
+        "description": "do you sings (sing)",
+        "issueType": "grammar",
+        "category": {
+          "id": "GRAMMAR",
+          "name": "Grammar"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Did you mean \"note\"?",
+      "shortMessage": "Possible typo",
+      "replacements": [
+        {
+          "value": "note"
+        }
+      ],
+      "offset": 296,
+      "length": 3,
+      "context": {
+        "text": "... you thinks of grammar checkers? Please not that they are not perfect. Style issues...",
+        "offset": 43,
+        "length": 3
+      },
+      "sentence": "Please not that they are not perfect.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "PLEASE_NOT_THAT",
+        "subId": "1",
+        "description": "please not (note) that",
+        "issueType": "misspelling",
+        "category": {
+          "id": "TYPOS",
+          "name": "Possible Typo"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "Consider using \"P.M.\"",
+      "shortMessage": "Redundant phrase",
+      "replacements": [
+        {
+          "value": "P.M."
+        }
+      ],
+      "offset": 366,
+      "length": 22,
+      "context": {
+        "text": "... Style issues get a blue marker: It's 5 P.M. in the afternoon. The weather was nice on Thursday, 27 Ju...",
+        "offset": 43,
+        "length": 22
+      },
+      "sentence": "Style issues get a blue marker: It's 5 P.M. in the afternoon.",
+      "type": {
+        "typeName": "Hint"
+      },
+      "rule": {
+        "id": "PM_IN_THE_EVENING",
+        "subId": "3",
+        "description": "PM in the evening (PM)",
+        "issueType": "style",
+        "category": {
+          "id": "REDUNDANCY",
+          "name": "Redundant Phrases"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    },
+    {
+      "message": "The date 27 June 2017 is not a Thursday, but a Tuesday.",
+      "shortMessage": "",
+      "replacements": [],
+      "offset": 413,
+      "length": 22,
+      "context": {
+        "text": "... the afternoon. The weather was nice on Thursday, 27 June 2017.",
+        "offset": 43,
+        "length": 22
+      },
+      "sentence": "The weather was nice on Thursday, 27 June 2017.",
+      "type": {
+        "typeName": "Other"
+      },
+      "rule": {
+        "id": "DATE_WEEKDAY",
+        "subId": "1",
+        "description": "Weekday doesn't match date",
+        "issueType": "inconsistency",
+        "category": {
+          "id": "SEMANTICS",
+          "name": "Semantics"
+        }
+      },
+      "ignoreForIncompleteSentence": false
+    }
+  ]
+}

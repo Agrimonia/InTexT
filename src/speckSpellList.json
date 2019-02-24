@@ -1,0 +1,135 @@
+[
+  {
+    "from": 0,
+    "to": 1,
+    "type": "Typography",
+    "message": "Use a smart opening quote here: \"“\".",
+    "shortMessage": "Use smart quotes"
+  },
+  {
+    "from": 10,
+    "to": 11,
+    "type": "Typography",
+    "message": "Use a smart closing quote here: \"”\".",
+    "shortMessage": "Use smart quotes"
+  },
+  {
+    "from": 20,
+    "to": 21,
+    "type": "Typography",
+    "message": "Use a smart opening quote here: \"“\".",
+    "shortMessage": "Use smart quotes"
+  },
+  {
+    "from": 84,
+    "to": 85,
+    "type": "Typography",
+    "message": "Use a smart closing quote here: \"”\".",
+    "shortMessage": "Use smart quotes"
+  },
+  {
+    "from": 122,
+    "to": 125,
+    "type": "Typography",
+    "message": "Add a space between sentences",
+    "shortMessage": ""
+  },
+  {
+    "from": 245,
+    "to": 246,
+    "type": "Typography",
+    "message": "Use a smart opening quote here: \"“\".",
+    "shortMessage": "Use smart quotes"
+  },
+  {
+    "from": 249,
+    "to": 250,
+    "type": "Typography",
+    "message": "Use a smart closing quote here: \"”\".",
+    "shortMessage": "Use smart quotes"
+  },
+  {
+    "from": 264,
+    "to": 265,
+    "type": "Typography",
+    "message": "Use a smart opening quote here: \"“\".",
+    "shortMessage": "Use smart quotes"
+  },
+  {
+    "from": 297,
+    "to": 303,
+    "type": "Possible Typo",
+    "message": "Possible spelling mistake found",
+    "shortMessage": "Spelling mistake"
+  },
+  {
+    "from": 315,
+    "to": 321,
+    "type": "Possible Typo",
+    "message": "Possible spelling mistake found",
+    "shortMessage": "Spelling mistake"
+  },
+  {
+    "from": 448,
+    "to": 453,
+    "type": "Possible Typo",
+    "message": "Possible spelling mistake found",
+    "shortMessage": "Spelling mistake"
+  },
+  {
+    "from": 512,
+    "to": 513,
+    "type": "Typography",
+    "message": "Use a smart closing quote here: \"”\".",
+    "shortMessage": "Use smart quotes"
+  },
+  {
+    "from": 514,
+    "to": 517,
+    "type": "Typography",
+    "message": "Add a space between sentences",
+    "shortMessage": ""
+  },
+  {
+    "from": 543,
+    "to": 552,
+    "type": "Grammar",
+    "message": "Don't include 'a' after a classification term. Use simply \"sort of\".",
+    "shortMessage": "Grammatical problem: unnecessary 'a/an'"
+  },
+  {
+    "from": 553,
+    "to": 565,
+    "type": "Possible Typo",
+    "message": "Possible spelling mistake found",
+    "shortMessage": "Spelling mistake"
+  },
+  {
+    "from": 599,
+    "to": 600,
+    "type": "Typography",
+    "message": "Use a smart closing quote here: \"”\".",
+    "shortMessage": "Use smart quotes"
+  },
+  {
+    "from": 631,
+    "to": 632,
+    "type": "Typography",
+    "message": "Use a smart opening quote here: \"“\".",
+    "shortMessage": "Use smart quotes"
+  },
+  {
+    "from": 675,
+    "to": 685,
+    "type": "Possible Typo",
+    "message": "Possible spelling mistake found",
+    "shortMessage": "Spelling mistake"
+  },
+  {
+    "from": 799,
+    "to": 800,
+    "type": "Typography",
+    "message": "Use a smart closing quote here: \"”\".",
+    "shortMessage": "Use smart quotes"
+  }
+]

@@ -6,14 +6,15 @@ import {
   convertFromRaw,
   RichUtils
 } from "draft-js";
-import Header from "../components/editor-header";
 import { generateNoteID } from "../utils/id";
 import localforage from "localforage";
 import LoginState from "../store/LoginStateStore";
 import languagetool from "languagetool-api";
-import debounce from "lodash.debounce";
-import "../assets/Editor.scss";
 import { APIClient } from "../utils/client";
+import { Button, Menu, Icon, Dropdown } from "antd";
+import { NavLink } from "react-router-dom";
+import "../assets/Editor.scss";
+import "../assets/editor-header.scss";
 
 export default class EditorPage extends React.Component {
   constructor() {
@@ -26,6 +27,7 @@ export default class EditorPage extends React.Component {
       editorState: EditorState.createEmpty(),
       loading: false,
       language: "zh-CN",
+      spellCheck: false, // 是否开启拼写检查
       spellCheckList: []
     };
     this.titleRef = React.createRef();
@@ -104,6 +106,12 @@ export default class EditorPage extends React.Component {
     return text;
   };
 
+  handleToolMenuClick = ({ key }) => {
+    if (key === "SPELLCHECK") {
+      this.setState({ spellcheck: !this.state.spellcheck });
+    }
+  };
+
   // Title
   handleTitleChange = e => {
     this.setState({ note_title: e.target.value }, () => {
@@ -138,29 +146,27 @@ export default class EditorPage extends React.Component {
 
   spellCheck = () => {
     const sentences = this.getSentenceFromEditor();
-    console.log("getSentenceFromEditor:", sentences);
+    // console.log("getSentenceFromEditor:", sentences);
     languagetool.check(
       { language: this.state.language, text: sentences },
       (err, res) => {
         if (err) {
           console.log("error from languagetool:", err);
         } else {
+          console.log(JSON.stringify(res));
           let results = [];
           res.matches.map(match => {
             const result = {
-              key: match.sentence,
+              from: match.offset,
+              to: match.offset + match.length,
               type: match.rule.category.name,
               message: match.message,
-              shortMessage: match.shortMessage,
-              errorValue: match.context.text.slice(
-                match.offset,
-                match.offset + match.length
-              ),
-              replaceValue: match.replacements[0].value
+              shortMessage: match.shortMessage
+              // replaceValue: match.replacements[0].value
             };
             results.push(result);
           });
-          console.log("spellCheckList", results);
+          console.log("spellCheckList", JSON.stringify(results));
           this.setState({
             spellCheckList: results
           });
@@ -177,13 +183,51 @@ export default class EditorPage extends React.Component {
     });
     // console.log("change!");
     // TODO: 更低频地调用拼写检查 API
-    // this.spellCheck();
   };
 
   render() {
+    const exportMenu = (
+      <Menu>
+        <Menu.Item key="HTML">导出为 HTML</Menu.Item>
+        <Menu.Item key="Markdown">导出为 Markdown</Menu.Item>
+        <Menu.Item key="DOC">导出为 DOC</Menu.Item>
+        <Menu.Item key="PDF">导出为 PDF</Menu.Item>
+      </Menu>
+    );
+
+    const toolMenu = (
+      <Menu onClick={this.handleToolMenuClick}>
+        <Menu.Item key="SPELLCHECK">
+          {this.state.spellcheck ? (
+            <>
+              <Icon type="check" />
+              <span>智能纠错</span>
+            </>
+          ) : (
+            <span>智能纠错</span>
+          )}
+        </Menu.Item>
+        <Menu.Item disabled>智能建议</Menu.Item>
+      </Menu>
+    );
+
     return (
       <div>
-        <Header note_title={this.state.note_title} />
+        <div className="header-bar">
+          <span className="header-button-left">
+            <NavLink to="/home">
+              <Button shape="circle" icon="left" />
+            </NavLink>
+            <Dropdown overlay={exportMenu} placement="topLeft">
+              <Button shape="circle" icon="export" />
+            </Dropdown>
+            <Dropdown overlay={toolMenu} placement="topLeft">
+              <Button shape="circle" icon="tool" />
+            </Dropdown>
+          </span>
+          <span className="header-title">{this.state.note_title}</span>
+        </div>
+
         <div className="editor-area">
           <div className="editor-assistant" />
           <div className="editor-content">
