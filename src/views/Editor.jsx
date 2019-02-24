@@ -20,15 +20,15 @@ export default class EditorPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      note_title: "无标题",
-      template: "默认",
-      global_id: "",
-      author: LoginState.username,
-      editorState: EditorState.createEmpty(),
-      loading: false,
-      language: "zh-CN",
+      note_title: "无标题", // 文章标题
+      template: "默认", // 文章模板
+      global_id: "", // 文章的全局ID
+      author: LoginState.username, // 文章作者
+      editorState: EditorState.createEmpty(), // 初始化文章内容
+      loading: false, // TODO: 文章加载状态
+      language: "zh-CN", // 文章模板语言
       spellCheck: false, // 是否开启拼写检查
-      spellCheckList: []
+      spellCheckList: [] // 拼写检查结果
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
@@ -36,6 +36,8 @@ export default class EditorPage extends React.Component {
 
   componentDidMount() {
     if (this.props.location.state.hasOwnProperty("global_id")) {
+      // 如果 URL 带文章ID，则读取本地存储
+      // TODO: 判断本地文章是否为最新，否则从后台同步文章
       this.setState(
         {
           note_title:
@@ -50,6 +52,7 @@ export default class EditorPage extends React.Component {
         }
       );
     } else {
+      // 否则创建新文章
       this.setState(
         {
           global_id: generateNoteID(),
@@ -67,6 +70,7 @@ export default class EditorPage extends React.Component {
         }
       );
     }
+    // 土办法判断文章模板语言
     if (this.props.location.state.template.startsWith("En")) {
       this.setState({
         language: "en-US"
@@ -77,9 +81,7 @@ export default class EditorPage extends React.Component {
       });
     }
   }
-
-  focus = e => this.refs.editor.focus();
-
+  // 根据文章 ID 从本地存储拉取文章
   getContentFromLocal = () => {
     // console.log("this.state.global_id:", this.state.global_id);
     localforage.getItem(this.state.global_id).then(value => {
@@ -90,29 +92,25 @@ export default class EditorPage extends React.Component {
       });
     });
   };
+  // 保存文章到本地存储
   saveContentToLocal = content => {
     localforage.setItem(
       this.state.global_id,
       JSON.stringify(convertToRaw(content))
     );
   };
-
+  // 获取文章文本内容
   getSentenceFromEditor = () => {
     const text = this.state.editorState.getCurrentContent().getPlainText();
-    // const validText = text
-    //   .split(/[。.]/)
-    //   .map(t => t.trim())
-    //   .filter(t => t.length > 3);
     return text;
   };
-
+  // 根据 toolMenu 的菜单项 key 触发事件
   handleToolMenuClick = ({ key }) => {
     if (key === "SPELLCHECK") {
       this.setState({ spellcheck: !this.state.spellcheck });
     }
   };
-
-  // Title
+  // 同步文章标题更改
   handleTitleChange = e => {
     this.setState({ note_title: e.target.value }, () => {
       APIClient.post("/note/update", {
@@ -121,7 +119,7 @@ export default class EditorPage extends React.Component {
       });
     });
   };
-
+  // 输入标题后回车会跳转到正文
   handleTitleKeyCommand = command => {
     if (command.keyCode == 13) {
       // Enter: 13
@@ -129,21 +127,26 @@ export default class EditorPage extends React.Component {
       content.focus();
     }
   };
-
+  // 编辑器响应内容更改
   handleKeyCommand = command => {
     const newState = RichUtils.handleKeyCommand(
       this.state.editorState,
       command
     );
-
     if (newState) {
       this.onChange(newState);
       return "handled";
     }
-
     return "not-handled";
   };
-
+  onChange = editorState => {
+    const contentState = editorState.getCurrentContent();
+    this.saveContentToLocal(contentState);
+    this.setState({
+      editorState
+    });
+  };
+  // 触发拼写检查
   spellCheck = () => {
     const sentences = this.getSentenceFromEditor();
     // console.log("getSentenceFromEditor:", sentences);
@@ -173,16 +176,6 @@ export default class EditorPage extends React.Component {
         }
       }
     );
-  };
-
-  onChange = editorState => {
-    const contentState = editorState.getCurrentContent();
-    this.saveContentToLocal(contentState);
-    this.setState({
-      editorState
-    });
-    // console.log("change!");
-    // TODO: 更低频地调用拼写检查 API
   };
 
   render() {
@@ -224,6 +217,7 @@ export default class EditorPage extends React.Component {
             <Dropdown overlay={toolMenu} placement="topLeft">
               <Button shape="circle" icon="tool" />
             </Dropdown>
+            <Button shape="circle" icon="check" onClick={this.spellCheck} />
           </span>
           <span className="header-title">{this.state.note_title}</span>
         </div>
