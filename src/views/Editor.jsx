@@ -4,7 +4,8 @@ import {
   EditorState,
   convertToRaw,
   convertFromRaw,
-  RichUtils
+  RichUtils,
+  CompositeDecorator
 } from "draft-js";
 import { generateNoteID } from "../utils/id";
 import localforage from "localforage";
@@ -24,14 +25,24 @@ export default class EditorPage extends React.Component {
       template: "默认", // 文章模板
       global_id: "", // 文章的全局ID
       author: LoginState.username, // 文章作者
-      editorState: EditorState.createEmpty(), // 初始化文章内容
+      editorState: EditorState.createEmpty(this.compositeDecorator), // 初始化文章内容
       loading: false, // TODO: 文章加载状态
       language: "zh-CN", // 文章模板语言
-      spellCheck: false, // 是否开启拼写检查
-      spellCheckList: [] // 拼写检查结果
+      spellCheck: true, // 是否开启拼写检查
+      problemList: [] // 拼写检查结果
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
+    // 复合装饰器
+    this.compositeDecorator = new CompositeDecorator([
+      {
+        strategy: this.spellCheckStrategy,
+        component: props => {
+          console.log("props", props);
+          return <span class="warning-text">{props.children}</span>;
+        }
+      }
+    ]);
   }
 
   componentDidMount() {
@@ -87,7 +98,8 @@ export default class EditorPage extends React.Component {
     localforage.getItem(this.state.global_id).then(value => {
       this.setState({
         editorState: EditorState.createWithContent(
-          convertFromRaw(JSON.parse(value))
+          convertFromRaw(JSON.parse(value)),
+          this.compositeDecorator
         )
       });
     });
@@ -104,10 +116,30 @@ export default class EditorPage extends React.Component {
     const text = this.state.editorState.getCurrentContent().getPlainText();
     return text;
   };
+
+  setcompositeDecorator = () => {
+    if (this.state.spellCheck) {
+      this.setState({
+        editorState: EditorState.set(this.state.editorState, {
+          decorator: this.compositeDecorator
+        })
+      });
+    } else {
+      this.setState({
+        // 使用 null 删除所有装饰器
+        editorState: EditorState.set(this.state.editorState, {
+          decorator: null
+        })
+      });
+    }
+  };
   // 根据 toolMenu 的菜单项 key 触发事件
   handleToolMenuClick = ({ key }) => {
     if (key === "SPELLCHECK") {
-      this.setState({ spellcheck: !this.state.spellcheck });
+      this.setState(
+        { spellCheck: !this.state.spellCheck },
+        this.setcompositeDecorator
+      );
     }
   };
   // 同步文章标题更改
@@ -147,7 +179,7 @@ export default class EditorPage extends React.Component {
     });
   };
   // 触发拼写检查
-  spellCheck = () => {
+  requestSpellCheck = () => {
     const sentences = this.getSentenceFromEditor();
     // console.log("getSentenceFromEditor:", sentences);
     languagetool.check(
@@ -156,7 +188,6 @@ export default class EditorPage extends React.Component {
         if (err) {
           console.log("error from languagetool:", err);
         } else {
-          console.log(JSON.stringify(res));
           let results = [];
           res.matches.map(match => {
             const result = {
@@ -169,13 +200,21 @@ export default class EditorPage extends React.Component {
             };
             results.push(result);
           });
-          console.log("spellCheckList", JSON.stringify(results));
+          console.log("problemList: ", results);
           this.setState({
-            spellCheckList: results
+            problemList: results
           });
         }
       }
     );
+  };
+  // 拼写检查装饰器策略函数
+  spellCheckStrategy = (contentBlock, callback, contentState) => {
+    if (this.state.problemList) {
+      this.state.problemList.forEach(problem => {
+        callback(problem.from, problem.to);
+      });
+    }
   };
 
   render() {
@@ -191,7 +230,7 @@ export default class EditorPage extends React.Component {
     const toolMenu = (
       <Menu onClick={this.handleToolMenuClick}>
         <Menu.Item key="SPELLCHECK">
-          {this.state.spellcheck ? (
+          {this.state.spellCheck ? (
             <>
               <Icon type="check" />
               <span>智能纠错</span>
@@ -217,7 +256,11 @@ export default class EditorPage extends React.Component {
             <Dropdown overlay={toolMenu} placement="topLeft">
               <Button shape="circle" icon="tool" />
             </Dropdown>
-            <Button shape="circle" icon="check" onClick={this.spellCheck} />
+            <Button
+              shape="circle"
+              icon="check"
+              onClick={this.requestSpellCheck}
+            />
           </span>
           <span className="header-title">{this.state.note_title}</span>
         </div>
