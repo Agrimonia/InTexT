@@ -188,6 +188,7 @@ export default class EditorPage extends React.Component {
         if (err) {
           console.log("error from languagetool:", err);
         } else {
+          console.log("response from languagetool:", res);
           let results = [];
           res.matches.map(match => {
             const result = {
