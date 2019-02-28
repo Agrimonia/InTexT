@@ -1,0 +1,112 @@
+import React from "react";
+import LoginState from "../store/LoginStateStore";
+//import {Link} from 'react-router'
+//import { addHiddenFinalProp } from 'mobx/lib/internal';
+import { Button, Steps, Icon } from "antd";
+import history from "../history";
+import "../assets/Begin.scss";
+
+const Step = Steps.Step;
+
+export default class BeginPage extends React.Component {
+  constructor() {
+    super();
+    this.state = { template: "默认" };
+  }
+  handleLogout = () => {
+    history.push({
+      pathname: "/login",
+      state: { template: this.state.template }
+    });
+  };
+
+  handleHome = () => {
+    history.push({
+      pathname: "/home",
+      state: { template: this.state.template }
+    });
+  };
+
+  handleLogin = () => {
+    history.push({
+      pathname: "/login",
+      state: { template: this.state.template }
+    });
+  };
+
+  handleSign = () => {
+    history.push({
+      pathname: "/signup",
+      state: { template: this.state.template }
+    });
+  };
+
+  handleAbout = () => {
+    const w = window.open("about:blank");
+    w.location.href = "https://intext.jotang.party/";
+  };
+
+  render() {
+    return (
+      <div className="img">
+        <h1 className="A">
+          抒写
+          <p className="Z">Intelligent Text Editor</p>
+        </h1>
+        <div className="B">
+          <p className="W">
+            {LoginState.token != "" ? (
+              <span>
+                亲爱的{LoginState.username},您已经登录啦！
+                <p>快进入抒写吧！</p>
+              </span>
+            ) : (
+              <p>
+                您还没有登录哦！
+                <p>请先完成注册与登录</p>
+              </p>
+            )}
+            <p>
+              <Button
+                className="but"
+                icon="highlight"
+                onClick={this.handleHome}
+              >
+                进入抒写
+              </Button>
+            </p>
+          </p>
+        </div>
+
+        <Steps className="D">
+          <Step status="finish" title="注册" icon={<Icon type="user" />} />
+          <Step status="finish" title="登录" icon={<Icon type="solution" />} />
+          <Step status="process" title="进入抒写" icon={<Icon type="book" />} />
+          <Step status="wait" title="畅游抒写" icon={<Icon type="smile-o" />} />
+        </Steps>
+
+        <div className="C">
+          <Button
+            className="button"
+            icon="left-square"
+            onClick={this.handleSign}
+          >
+            注册
+          </Button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <Button className="button" icon="eye" onClick={this.handleAbout}>
+            About
+          </Button>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <Button
+            className="button"
+            icon="right-square"
+            onClick={this.handleLogin}
+          >
+            登录
+          </Button>
+        </div>
+      </div>
+    );
+  }
+}

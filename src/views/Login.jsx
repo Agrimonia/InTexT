@@ -80,7 +80,9 @@ const LoginPage = () => {
   return (
     <div className="login-page">
       <div className="login-container">
-        <h1 className="login-title">Member Login</h1>
+        <h1 className="login-title">
+          <font className="logo">InTexT</font> Login
+        </h1>
         <LoginForm />
       </div>
     </div>

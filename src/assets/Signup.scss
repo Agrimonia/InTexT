@@ -2,16 +2,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  //background-color: #CCDDFF;
+  background-color: rgb(245, 245, 217);
+  margin-top: 1px;
+  margin-bottom: -15px;
 }
 
 .signup-container {
+  margin-bottom: 80px;
   margin-top: 5rem;
+  background-color: rgb(245, 245, 217);
 }
 
+.logo {
+  margin-top: 14px;
+  margin-bottom: 14px;
+  margin-left: 3.5rem;
+  height: 9rem;
+  color: rgb(7, 7, 7);
+  font-variant: petite-caps;
+  font-family: auto;
+}
 .signup-title {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 15%;
+  margin-left: -24px;
+  color: rgb(7, 7, 7);
 }

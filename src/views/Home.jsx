@@ -7,7 +7,8 @@ import {
   Icon,
   Modal,
   Cascader,
-  Button
+  Button,
+  Rate
 } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
 import NotesTable from "../components/notes-table";
@@ -40,7 +41,10 @@ export default class Home extends React.Component {
   };
 
   handleLogout = () => {
-    history.push("/login");
+    history.push({
+      pathname: "/login",
+      state: { template: this.state.template }
+    });
   };
 
   onChange = value => {
@@ -53,6 +57,11 @@ export default class Home extends React.Component {
         console.log(this.state.template);
       }
     );
+  };
+
+  handleScore = () => {
+    render();
+    return <Rate character={<Icon type="heart" />} allowHalf />;
   };
 
   render() {
@@ -72,7 +81,7 @@ export default class Home extends React.Component {
           />
         </Modal>
         <Sider>
-          <h1 className="logo">InTexT</h1>
+          <h1 className="logo1">InTexT</h1>
           <Menu theme="dark" defaultSelectedKeys={["2"]} mode="inline">
             <Menu.Item key="1">
               <Icon type="user" />
@@ -85,6 +94,18 @@ export default class Home extends React.Component {
             <Menu.Item key="3">
               <Icon type="logout" />
               <span onClick={this.handleLogout}>登出</span>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <Icon type="team" />
+              <span>讨论园地</span>
+            </Menu.Item>
+            <Menu.Item key="5">
+              <Icon type="sound" />
+              <span>我的消息</span>
+            </Menu.Item>
+            <Menu.Item key="6">
+              <Icon type="heart" />
+              <span onClick={this.handleScore}>评分</span>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -134,6 +155,14 @@ const options = [
           {
             value: "仙侠",
             label: "仙侠"
+          },
+          {
+            value: "历史",
+            label: "历史"
+          },
+          {
+            value: "言情",
+            label: "言情"
           }
         ]
       },
@@ -148,6 +177,28 @@ const options = [
           {
             value: "学习报告",
             label: "学习报告"
+          }
+        ]
+      },
+      {
+        value: "合同",
+        label: "合同",
+        children: [
+          {
+            value: "买卖合同",
+            label: "买卖合同"
+          },
+          {
+            value: "租赁合同",
+            label: "租赁合同"
+          },
+          {
+            value: "借贷合同",
+            label: "借贷合同"
+          },
+          {
+            value: "技术开发合同",
+            label: "技术开发合同"
           }
         ]
       }
@@ -170,6 +221,10 @@ const options = [
         label: "Motivation Letter"
       }
     ]
+  },
+  {
+    value: "其他",
+    label: "其他"
   }
 ];
 

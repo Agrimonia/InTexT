@@ -178,7 +178,9 @@ const SignupPage = () => {
   return (
     <div className="signup-page">
       <div className="signup-container">
-        <h1 className="signup-title">用户注册</h1>
+        <h1 className="signup-title">
+          <font className="logo">InTexT</font>&nbsp;&nbsp;Sign Up
+        </h1>
         <SignupForm />
       </div>
     </div>
