@@ -110,6 +110,7 @@ export default class BeginPage extends React.Component {
             登录
           </Button>
         </div>
+        <footer>InTexT ©2018 Created by JoTang</footer>
       </div>
     );
   }
