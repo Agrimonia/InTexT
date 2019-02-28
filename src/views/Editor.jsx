@@ -63,7 +63,10 @@ export default class EditorPage extends React.Component {
           );
           console.log("props", props);
           return (
-            <Popover content={popContent} title={problem.wrongText}>
+            <Popover
+              content={popContent}
+              title={`${problem.type}: ${problem.wrongText}`}
+            >
               <span className="warning-text">{props.children}</span>
             </Popover>
           );
