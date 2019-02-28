@@ -79,10 +79,14 @@ export default class BeginPage extends React.Component {
         </div>
 
         <Steps className="D">
-          <Step status="finish" title="注册" icon={<Icon type="user" />} />
-          <Step status="finish" title="登录" icon={<Icon type="solution" />} />
+          <Step status="process" title="注册" icon={<Icon type="user" />} />
+          <Step status="process" title="登录" icon={<Icon type="solution" />} />
           <Step status="process" title="进入抒写" icon={<Icon type="book" />} />
-          <Step status="wait" title="畅游抒写" icon={<Icon type="smile-o" />} />
+          <Step
+            status="process"
+            title="畅游抒写"
+            icon={<Icon type="smile-o" />}
+          />
         </Steps>
 
         <div className="C">
