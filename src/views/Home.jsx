@@ -84,8 +84,7 @@ export default class Home extends React.Component {
           <h1 className="logo1">InTexT</h1>
           <Menu theme="dark" defaultSelectedKeys={["2"]} mode="inline">
             <Menu.Item key="1">
-              <Icon type="user" />
-              <span>用户中心</span>
+              <span>{LoginState.username || "体验用户"}，您好！</span>
             </Menu.Item>
             <Menu.Item key="2">
               <Icon type="inbox" />
@@ -111,9 +110,6 @@ export default class Home extends React.Component {
         </Sider>
         <Layout>
           <Header>
-            <p className="welcome">
-              当前用户：{LoginState.username || "未登录"}
-            </p>
             <div className="button-container">
               <Button onClick={this.showModal} type="primary">
                 新建
