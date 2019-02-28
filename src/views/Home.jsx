@@ -91,10 +91,6 @@ export default class Home extends React.Component {
               <Icon type="inbox" />
               <span>我的文档</span>
             </Menu.Item>
-            <Menu.Item key="3">
-              <Icon type="logout" />
-              <span onClick={this.handleLogout}>登出</span>
-            </Menu.Item>
             <Menu.Item key="4">
               <Icon type="team" />
               <span>讨论园地</span>
@@ -106,6 +102,10 @@ export default class Home extends React.Component {
             <Menu.Item key="6">
               <Icon type="heart" />
               <span onClick={this.handleScore}>评分</span>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Icon type="logout" />
+              <span onClick={this.handleLogout}>退出</span>
             </Menu.Item>
           </Menu>
         </Sider>
