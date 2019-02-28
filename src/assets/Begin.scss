@@ -7,6 +7,7 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
+  height: 100vh;
 }
 .A {
   font-size: 110px;
@@ -18,7 +19,7 @@
   text-align: center;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   margin-top: 0px;
-  font-size: 32px;
+  font-size: 54px;
 }
 .W {
   text-align: center;
@@ -52,9 +53,9 @@
   justify-content: center;
 }
 .D {
-  margin-top: 2px;
-  margin-left: 200px;
+  margin-top: 20px;
+  padding-left: 20%;
+  padding-right: 20%;
   justify-content: center;
   display: flex;
-  width: 900px;
 }

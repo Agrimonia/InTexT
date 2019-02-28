@@ -47,6 +47,9 @@ export default class BeginPage extends React.Component {
   };
 
   render() {
+    if (LoginState.token != "") {
+      handleHome();
+    }
     return (
       <div className="img">
         <h1 className="A">
@@ -57,14 +60,11 @@ export default class BeginPage extends React.Component {
           <p className="W">
             {LoginState.token != "" ? (
               <span>
-                亲爱的{LoginState.username},您已经登录啦！
+                亲爱的 {LoginState.username},您已经登录啦！
                 <p>快进入抒写吧！</p>
               </span>
             ) : (
-              <p>
-                您还没有登录哦！
-                <p>请先完成注册与登录</p>
-              </p>
+              <p>无需注册，马上体验抒写！</p>
             )}
             <p>
               <Button
@@ -72,7 +72,7 @@ export default class BeginPage extends React.Component {
                 icon="highlight"
                 onClick={this.handleHome}
               >
-                进入抒写
+                现在开始
               </Button>
             </p>
           </p>
