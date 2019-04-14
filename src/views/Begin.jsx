@@ -1,10 +1,9 @@
 import React from "react";
-import LoginState from "../store/LoginStateStore";
-//import {Link} from 'react-router'
-//import { addHiddenFinalProp } from 'mobx/lib/internal';
+//import LoginState from "../store/LoginStateStore";
 import { Button, Steps, Icon } from "antd";
 import history from "../history";
 import "../assets/Begin.scss";
+import cookie from "react-cookies";
 
 const Step = Steps.Step;
 
@@ -13,6 +12,7 @@ export default class BeginPage extends React.Component {
     super();
     this.state = { template: "默认" };
   }
+
   handleLogout = () => {
     history.push({
       pathname: "/login",
@@ -47,8 +47,8 @@ export default class BeginPage extends React.Component {
   };
 
   render() {
-    if (LoginState.token != "") {
-      handleHome();
+    if (cookie.load("token") != "") {
+      this.handleHome;
     }
     return (
       <div className="img">
@@ -58,9 +58,9 @@ export default class BeginPage extends React.Component {
         </h1>
         <div className="B">
           <p className="W">
-            {LoginState.token != "" ? (
+            {cookie.load("token") != "" ? (
               <span>
-                亲爱的 {LoginState.username},您已经登录啦！
+                亲爱的 {cookie.load("username")},您已经登录啦！
                 <p>快进入抒写吧！</p>
               </span>
             ) : (
@@ -79,14 +79,10 @@ export default class BeginPage extends React.Component {
         </div>
 
         <Steps className="D">
-          <Step status="process" title="注册" icon={<Icon type="user" />} />
-          <Step status="process" title="登录" icon={<Icon type="solution" />} />
+          <Step status="finish" title="注册" icon={<Icon type="user" />} />
+          <Step status="finish" title="登录" icon={<Icon type="solution" />} />
           <Step status="process" title="进入抒写" icon={<Icon type="book" />} />
-          <Step
-            status="process"
-            title="畅游抒写"
-            icon={<Icon type="smile-o" />}
-          />
+          <Step status="wait" title="畅游抒写" icon={<Icon type="smile-o" />} />
         </Steps>
 
         <div className="C">
@@ -110,7 +106,6 @@ export default class BeginPage extends React.Component {
             登录
           </Button>
         </div>
-        <footer>InTexT ©2018 Created by JoTang</footer>
       </div>
     );
   }

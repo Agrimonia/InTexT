@@ -9,13 +9,14 @@ import {
 } from "draft-js";
 import { generateNoteID } from "../utils/id";
 import localforage from "localforage";
-import LoginState from "../store/LoginStateStore";
+//import LoginState from "../store/LoginStateStore";
 import languagetool from "languagetool-api";
 import { APIClient } from "../utils/client";
 import { Button, Menu, Icon, Dropdown } from "antd";
 import { NavLink } from "react-router-dom";
 import "../assets/Editor.scss";
 import "../assets/editor-header.scss";
+import cookie from "react-cookies";
 
 export default class EditorPage extends React.Component {
   constructor() {
@@ -24,7 +25,7 @@ export default class EditorPage extends React.Component {
       note_title: "无标题", // 文章标题
       template: "默认", // 文章模板
       global_id: "", // 文章的全局ID
-      author: LoginState.username, // 文章作者
+      author: cookie.load("username"), // 文章作者
       editorState: EditorState.createEmpty(this.compositeDecorator), // 初始化文章内容
       loading: false, // TODO: 文章加载状态
       language: "zh-CN", // 文章模板语言

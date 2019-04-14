@@ -4,6 +4,7 @@ import { APIClient } from "../utils/client.js";
 import history from "../history";
 import LoginState from "../store/LoginStateStore";
 import "../assets/Login.scss";
+import cookie from "react-cookies";
 
 class Login extends React.Component {
   constructor() {
@@ -19,8 +20,11 @@ class Login extends React.Component {
         console.log("Received values of form: ", values);
         APIClient.post("/login", values)
           .then(response => {
-            LoginState.token = response.data.token;
-            LoginState.username = values.username;
+            //LoginState.token = response.data.token;
+            //LoginState.username = values.username;
+            //cookie.set('username',)
+            cookie.save("username", values.username, { path: "/" });
+            cookie.save("token", response.data.token, { path: "/" });
             history.push("/home");
           })
           .catch(error => {

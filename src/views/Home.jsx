@@ -13,14 +13,22 @@ import {
 const { Header, Content, Footer, Sider } = Layout;
 import NotesTable from "../components/notes-table";
 import history from "../history";
-import LoginState from "../store/LoginStateStore";
+//import
+//import LoginState from "../store/LoginStateStore";
 import "../assets/Home.scss";
+import { SSL_OP_COOKIE_EXCHANGE } from "constants";
+import cookie from "react-cookies";
 
 // const SubMenu = Menu.SubMenu;
 export default class Home extends React.Component {
   constructor() {
     super();
-    this.state = { templateVisible: false, template: "默认" };
+    this.state = {
+      templateVisible: false,
+      template: "默认",
+      token: cookie.load("token"),
+      username: cookie.load("username")
+    };
   }
 
   showModal = () => {
@@ -41,6 +49,8 @@ export default class Home extends React.Component {
   };
 
   handleLogout = () => {
+    cookie.remove("token", { path: "/" });
+    cookie.remove("username", { path: "/" });
     history.push({
       pathname: "/login",
       state: { template: this.state.template }
@@ -84,7 +94,7 @@ export default class Home extends React.Component {
           <h1 className="logo1">InTexT</h1>
           <Menu theme="dark" defaultSelectedKeys={["2"]} mode="inline">
             <Menu.Item key="1">
-              <span>{LoginState.username || "体验用户"}，您好！</span>
+              <span>{this.state.username || "体验用户"}，您好！</span>
             </Menu.Item>
             <Menu.Item key="2">
               <Icon type="inbox" />
