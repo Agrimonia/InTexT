@@ -6,9 +6,9 @@ def get_time():
     lt = time.localtime()
     noon = time.strftime("%p", lt)
     if noon == "PM":
-        st = time.strftime("%Y/%m/%d 下午%I:%M", lt)
+        st = time.strftime("%Y/%m/%d %H:%M", lt)
     else:
-        st = time.strftime("%Y/%m/%d 上午%I:%M", lt)
+        st = time.strftime("%Y/%m/%d %H:%M", lt)
     return st
 
 
@@ -18,7 +18,7 @@ class Note(db.Model):
     note_id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=True)
     note_title = db.Column(db.String(80), nullable=False)
-    author = db.Column(db.String(20), db.ForeignKey('users.username'))
+    author = db.Column(db.Integer, db.ForeignKey('users.id'))
     create_time = db.Column(db.String(30), nullable=False)
     update_time = db.Column(db.String(30))
     is_del = db.Column(db.Boolean, nullable=False)

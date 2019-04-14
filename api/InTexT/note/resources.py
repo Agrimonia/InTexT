@@ -10,7 +10,7 @@ class NoteCreate(Resource):
         note = Note()
         args = {}
         args['note_title'] = request.json.get('note_title', False)
-        args['author'] = current_user.username
+        args['author'] = current_user.id
         args['content'] = request.json.get('content', False)
         args['global_id'] = request.json.get('global_id', False)
         args['template'] = request.json.get('template', False)
