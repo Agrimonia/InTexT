@@ -12,12 +12,21 @@ import localforage from "localforage";
 //import LoginState from "../store/LoginStateStore";
 import languagetool from "languagetool-api";
 import { APIClient } from "../utils/client";
-import { Button, Menu, Icon, Dropdown } from "antd";
+import { Button, Menu, Icon, Dropdown, Popover } from "antd";
 import { NavLink } from "react-router-dom";
 import "../assets/Editor.scss";
 import "../assets/editor-header.scss";
 import cookie from "react-cookies";
 
+// 根据错误的文本找到其错误详情
+function findProblemByText(wrongText, problemList) {
+  for (let i = 0; i < problemList.length; i++) {
+    console.log(problemList[i]);
+    if (problemList[i].wrongText === wrongText) {
+      return problemList[i];
+    }
+  }
+}
 export default class EditorPage extends React.Component {
   constructor() {
     super();
@@ -39,8 +48,29 @@ export default class EditorPage extends React.Component {
       {
         strategy: this.spellCheckStrategy,
         component: props => {
+          const problem = findProblemByText(
+            props.decoratedText,
+            this.state.problemList
+          );
+          const popContent = (
+            <>
+              <p>{problem.message}</p>
+              <a>
+                {problem.replacements[0]
+                  ? `替换为 ${problem.replacements[0].value}`
+                  : "无修改建议"}
+              </a>
+            </>
+          );
           console.log("props", props);
-          return <span class="warning-text">{props.children}</span>;
+          return (
+            <Popover
+              content={popContent}
+              title={`${problem.type}: ${problem.wrongText}`}
+            >
+              <span className="warning-text">{props.children}</span>
+            </Popover>
+          );
         }
       }
     ]);
@@ -118,7 +148,7 @@ export default class EditorPage extends React.Component {
     return text;
   };
 
-  setcompositeDecorator = () => {
+  setCompositeDecorator = () => {
     if (this.state.spellCheck) {
       this.setState({
         editorState: EditorState.set(this.state.editorState, {
@@ -139,7 +169,7 @@ export default class EditorPage extends React.Component {
     if (key === "SPELLCHECK") {
       this.setState(
         { spellCheck: !this.state.spellCheck },
-        this.setcompositeDecorator
+        this.setCompositeDecorator
       );
     }
   };
@@ -197,8 +227,12 @@ export default class EditorPage extends React.Component {
               to: match.offset + match.length,
               type: match.rule.category.name,
               message: match.message,
-              shortMessage: match.shortMessage
-              // replaceValue: match.replacements[0].value
+              shortMessage: match.shortMessage,
+              replacements: match.replacements,
+              wrongText: match.context.text.slice(
+                match.context.offset,
+                match.context.offset + match.context.length
+              )
             };
             results.push(result);
           });

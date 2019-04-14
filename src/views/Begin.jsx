@@ -15,29 +15,25 @@ export default class BeginPage extends React.Component {
 
   handleLogout = () => {
     history.push({
-      pathname: "/login",
-      state: { template: this.state.template }
+      pathname: "/login"
     });
   };
 
   handleHome = () => {
     history.push({
-      pathname: "/home",
-      state: { template: this.state.template }
+      pathname: "/home"
     });
   };
 
   handleLogin = () => {
     history.push({
-      pathname: "/login",
-      state: { template: this.state.template }
+      pathname: "/login"
     });
   };
 
   handleSign = () => {
     history.push({
-      pathname: "/signup",
-      state: { template: this.state.template }
+      pathname: "/signup"
     });
   };
 

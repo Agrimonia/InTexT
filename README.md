@@ -4,7 +4,7 @@ InTexT (Intelligent text editor) 是由 JoTang 开发的一款专注于智能化
 
 主要技术栈：
 
-- 前端：`React` + `Mobx` + `Keras.js`
+- 前端：`React` + `Mobx` + `Tensorflow.js`
 - 后端：`Flask` + `MySQL`
 
 ## 在线演示
@@ -36,7 +36,6 @@ gulp dev
 ```
 
 #### 后端运行
-
 
 建议进入虚拟环境，以 conda 为例：
 
@@ -70,4 +69,3 @@ Visual Studio Code
 其他编辑器
 
 见 Prettier 文档：<https://prettier.io/docs/en/editors.html>
-

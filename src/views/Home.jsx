@@ -69,6 +69,11 @@ export default class Home extends React.Component {
     );
   };
 
+  // handleAbout = () => {
+  //   const w = window.open("about:blank");
+  //   w.location.href = "https://intext.jotang.party/";
+  // };
+
   handleScore = () => {
     render();
     return <Rate character={<Icon type="heart" />} allowHalf />;
