@@ -1,4 +1,4 @@
-# InTexT(抒写)
+# [WIP]InTexT(抒写)
 
 InTexT (Intelligent text editor) 是由 JoTang 开发的一款专注于智能化内容生产的文档工具。
 
@@ -54,18 +54,3 @@ python manage.py db_create
 python run.py
 ```
 
-## 团队配置
-
-### 建议用 Prettier 进行代码格式化
-
-为了避免转换代码风格的痛苦，我们用 Prettier 取代 ESlint，你可以按照自己的风格来编写代码，提交时 Prettier 会帮你自动格式化。
-
-#### 与编辑器集成
-
-Visual Studio Code
-
-在 VSCode 的插件商店中搜索 Prettier 并安装。由于目前没有上 ESlint，建议在当前工作区禁用其他 Linter。
-
-其他编辑器
-
-见 Prettier 文档：<https://prettier.io/docs/en/editors.html>
