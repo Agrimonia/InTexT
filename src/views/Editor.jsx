@@ -10,74 +10,89 @@ import {
 import { generateNoteID } from "../utils/id";
 import localforage from "localforage";
 //import LoginState from "../store/LoginStateStore";
-import languagetool from "languagetool-api";
+//import languagetool from "languagetool-api";
 import { APIClient } from "../utils/client";
 import { Button, Menu, Icon, Dropdown, Popover } from "antd";
 import { NavLink } from "react-router-dom";
 import "../assets/Editor.scss";
 import "../assets/editor-header.scss";
 import cookie from "react-cookies";
+const languagetool = require("languagetool-api");
 
-// 根据错误的文本找到其错误详情
-function findProblemByText(wrongText, problemList) {
-  for (let i = 0; i < problemList.length; i++) {
-    console.log(problemList[i]);
-    if (problemList[i].wrongText === wrongText) {
-      return problemList[i];
-    }
-  }
-}
 export default class EditorPage extends React.Component {
   constructor() {
     super();
+    const compositeDecorator = new CompositeDecorator([
+      {
+        // 拼写检查装饰器策略函数
+        strategy: (contentBlock, callback, contentState) => {
+          const contenttext = contentBlock.getText();
+          if (contenttext && this.state.problemList) {
+            // console.log(contenttext)
+            this.state.problemList.forEach(problem => {
+              // console.log(problem)
+              callback(problem.from, problem.to);
+            });
+          }
+        },
+        //拼写装饰组件
+        component: props => {
+          console.log("props", props);
+          const mistake = MistakenTextDetail(
+            props.decoratedText,
+            this.state.problemList
+          );
+          const PopContent = (
+            <>
+              <p>MistakeDetails(错误详情)</p>
+              <a>{mistake.message}</a>
+              <p>BestSuggestion（最佳建议）</p>
+              <a>{mistake.replaceValue}</a>
+            </>
+          );
+          //return<span class="warning-text">{props.children}</span>
+          return (
+            <Popover content={PopContent} title={mistake.wrongText}>
+              <span class="warning-text-problem">{props.children}</span>
+            </Popover>
+          );
+        }
+      },
+      {
+        strategy: this.predictionStrategy,
+        component: PredicitonSpan
+      }
+    ]);
     this.state = {
       note_title: "无标题", // 文章标题
-      template: "默认", // 文章模板
+      template: cookie.load("template"), // 文章模板
       global_id: "", // 文章的全局ID
       author: cookie.load("username"), // 文章作者
-      editorState: EditorState.createEmpty(this.compositeDecorator), // 初始化文章内容
+      editorState: EditorState.createEmpty(compositeDecorator), // 初始化文章内容
       loading: false, // TODO: 文章加载状态
       language: "zh-CN", // 文章模板语言
       spellCheck: true, // 是否开启拼写检查
-      problemList: [] // 拼写检查结果
+      problemList: [], // 拼写检查结果
+      prediciton: true, //是否开启下一句预测
+      predicitonList: [], //预测语句队列
+      defaultTitle: "" //新建初始标题
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
     // 复合装饰器
-    this.compositeDecorator = new CompositeDecorator([
-      {
-        strategy: this.spellCheckStrategy,
-        component: props => {
-          const problem = findProblemByText(
-            props.decoratedText,
-            this.state.problemList
-          );
-          const popContent = (
-            <>
-              <p>{problem.message}</p>
-              <a>
-                {problem.replacements[0]
-                  ? `替换为 ${problem.replacements[0].value}`
-                  : "无修改建议"}
-              </a>
-            </>
-          );
-          console.log("props", props);
-          return (
-            <Popover
-              content={popContent}
-              title={`${problem.type}: ${problem.wrongText}`}
-            >
-              <span className="warning-text">{props.children}</span>
-            </Popover>
-          );
-        }
-      }
-    ]);
+
+    this.onChange = editorState => {
+      const contentState = editorState.getCurrentContent();
+      this.saveContentToLocal(contentState);
+      this.setState({
+        editorState
+      });
+    };
   }
 
   componentDidMount() {
-    if (this.props.location.state.hasOwnProperty("global_id")) {
+    if (this.state.global_id) {
+      //this.props.location.state.hasOwnProperty("global_id")
       // 如果 URL 带文章ID，则读取本地存储
       // TODO: 判断本地文章是否为最新，否则从后台同步文章
       this.setState(
@@ -85,6 +100,7 @@ export default class EditorPage extends React.Component {
           note_title:
             this.props.location.state.note_title || this.state.note_title,
           global_id: this.props.location.state.global_id,
+          //this.props.location.state.global_id,
           template: this.props.location.state.template
         },
         () => {
@@ -98,7 +114,7 @@ export default class EditorPage extends React.Component {
       this.setState(
         {
           global_id: generateNoteID(),
-          template: this.props.location.state.template
+          template: this.state.template
         },
         () => {
           console.log("初始化新文章", this.state.global_id);
@@ -112,20 +128,25 @@ export default class EditorPage extends React.Component {
         }
       );
     }
+
     // 土办法判断文章模板语言
-    if (this.props.location.state.template.startsWith("En")) {
+    if (this.state.template.startsWith("En")) {
+      //this.props.location.state.template.startsWith("En")
       this.setState({
-        language: "en-US"
+        language: "en-US",
+        note_title: "Untitled"
       });
-    } else if (this.props.location.state.template.startsWith("中")) {
+    } else if (this.state.template.startsWith("中")) {
+      //this.props.location.state.template.startsWith("中")
       this.setState({
-        language: "zh-CN"
+        language: "zh-CN",
+        note_title: "无标题"
       });
     }
   }
   // 根据文章 ID 从本地存储拉取文章
   getContentFromLocal = () => {
-    // console.log("this.state.global_id:", this.state.global_id);
+    console.log("this.state.global_id:", this.state.global_id);
     localforage.getItem(this.state.global_id).then(value => {
       this.setState({
         editorState: EditorState.createWithContent(
@@ -148,8 +169,8 @@ export default class EditorPage extends React.Component {
     return text;
   };
 
-  setCompositeDecorator = () => {
-    if (this.state.spellCheck) {
+  setcompositeDecorator = () => {
+    if (this.state.spellCheck || this.state.prediciton) {
       this.setState({
         editorState: EditorState.set(this.state.editorState, {
           decorator: this.compositeDecorator
@@ -169,8 +190,13 @@ export default class EditorPage extends React.Component {
     if (key === "SPELLCHECK") {
       this.setState(
         { spellCheck: !this.state.spellCheck },
-        this.setCompositeDecorator
+        this.setcompositeDecorator
       );
+    }
+    if (key === "PREDICTION") {
+      this.setState({
+        prediciton: !this.state.prediciton
+      });
     }
   };
   // 同步文章标题更改
@@ -202,56 +228,63 @@ export default class EditorPage extends React.Component {
     }
     return "not-handled";
   };
-  onChange = editorState => {
-    const contentState = editorState.getCurrentContent();
-    this.saveContentToLocal(contentState);
-    this.setState({
-      editorState
-    });
-  };
+
   // 触发拼写检查
-  requestSpellCheck = () => {
+  requestSpellCheck = editorState => {
     const sentences = this.getSentenceFromEditor();
-    // console.log("getSentenceFromEditor:", sentences);
+    console.log("getSentenceFromEditor:", sentences);
     languagetool.check(
       { language: this.state.language, text: sentences },
       (err, res) => {
         if (err) {
           console.log("error from languagetool:", err);
         } else {
-          console.log("response from languagetool:", res);
+          languagetool.showMistakes(res, function(arr) {
+            console.log("response from languagetool:", res);
+            arr.forEach(function(item) {
+              console.log(item);
+            });
+          });
+          languagetool.bestSuggestion(res, function(arr) {
+            arr.forEach(function(item) {
+              console.log(item.bestSuggestion);
+            });
+          });
           let results = [];
           res.matches.map(match => {
-            const result = {
+            var result = {
               from: match.offset,
               to: match.offset + match.length,
               type: match.rule.category.name,
               message: match.message,
               shortMessage: match.shortMessage,
-              replacements: match.replacements,
+              replaceValue: match.replacements[0].value,
               wrongText: match.context.text.slice(
                 match.context.offset,
                 match.context.offset + match.context.length
               )
             };
+            console.log(result);
             results.push(result);
           });
           console.log("problemList: ", results);
           this.setState({
             problemList: results
           });
+          this.onChange;
         }
       }
     );
   };
-  // 拼写检查装饰器策略函数
-  spellCheckStrategy = (contentBlock, callback, contentState) => {
-    if (this.state.problemList) {
-      this.state.problemList.forEach(problem => {
-        callback(problem.from, problem.to);
-      });
+
+  //预测语句装饰器策略函数
+  predictionStrategy = (contentBlock, callback, contentState) => {
+    if (this.state.predicitonList) {
     }
   };
+
+  //触发预测语句功能
+  requestPrediction = () => {};
 
   render() {
     const exportMenu = (
@@ -275,7 +308,16 @@ export default class EditorPage extends React.Component {
             <span>智能纠错</span>
           )}
         </Menu.Item>
-        <Menu.Item disabled>智能建议</Menu.Item>
+        <Menu.Item key="PREDICTION">
+          {this.state.prediciton ? (
+            <>
+              <Icon type="check" />
+              <span>智能纠错</span>
+            </>
+          ) : (
+            <span>智能纠错</span>
+          )}
+        </Menu.Item>
       </Menu>
     );
 
@@ -297,6 +339,11 @@ export default class EditorPage extends React.Component {
               icon="check"
               onClick={this.requestSpellCheck}
             />
+            <Button
+              shape="circle"
+              icon="edit"
+              onClick={this.requestPrediction}
+            />
           </span>
           <span className="header-title">{this.state.note_title}</span>
         </div>
@@ -309,7 +356,7 @@ export default class EditorPage extends React.Component {
                 ref={this.titleRef}
                 className="editor-title"
                 value={this.state.note_title}
-                placeholder="无标题"
+                placeholder={this.state.note_title}
                 onChange={this.handleTitleChange}
                 onKeyUp={this.handleTitleKeyCommand}
               />
@@ -319,6 +366,7 @@ export default class EditorPage extends React.Component {
               editorState={this.state.editorState}
               handleKeyCommand={this.handleKeyCommand}
               onChange={this.onChange}
+              spellCheck={true}
             />
           </div>
         </div>
@@ -326,3 +374,22 @@ export default class EditorPage extends React.Component {
     );
   }
 }
+//预测装饰组件
+const PredicitonSpan = props => {
+  console.log("props", props);
+  return <span class="predicting-text">{props.children}</span>;
+};
+
+function MistakenTextDetail(MisText, problemList) {
+  for (let i = 0; i < problemList.length; i++) {
+    if (problemList[i].wrongText === MisText) {
+      console.log("llllllll" + problemList[i]);
+      return problemList[i];
+    }
+  }
+}
+const style = {
+  problem: {
+    color: "rgba(123,234,567,0.5)"
+  }
+};

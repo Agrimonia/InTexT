@@ -65,6 +65,7 @@ export default class Home extends React.Component {
       },
       () => {
         console.log(this.state.template);
+        cookie.save("template", this.state.template);
       }
     );
   };

@@ -41,8 +41,13 @@
     line-height: 2rem;
   }
 }
-.warning-text {
-  background: url(https://s1.url.cn/tim/docs/static/img/underline-wave-83198c779a.png)
-    left bottom repeat-x;
+.warning-text-problem {
+  //background: url(https://s1.url.cn/tim/docs/static/img/underline-wave-83198c779a.png)
+  // left bottom repeat-x;
   padding-bottom: 2px;
+  color: rgba(123, 345, 567, 0.7);
+}
+.warning-text-prediction {
+  padding-bottom: 2px;
+  color: ;
 }
