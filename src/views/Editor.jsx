@@ -2,6 +2,7 @@ import React from "react";
 import {
   Editor,
   EditorState,
+  Modifier,
   convertToRaw,
   convertFromRaw,
   RichUtils,
@@ -17,6 +18,9 @@ import { NavLink } from "react-router-dom";
 import "../assets/Editor.scss";
 import "../assets/editor-header.scss";
 import cookie from "react-cookies";
+import $ from "jquery";
+import { start } from "repl";
+import { $mobx } from "mobx";
 const languagetool = require("languagetool-api");
 
 export default class EditorPage extends React.Component {
@@ -28,7 +32,7 @@ export default class EditorPage extends React.Component {
         strategy: (contentBlock, callback, contentState) => {
           const contenttext = contentBlock.getText();
           if (contenttext && this.state.problemList) {
-            // console.log(contenttext)
+            //console.log(contenttext)
             this.state.problemList.forEach(problem => {
               // console.log(problem)
               callback(problem.from, problem.to);
@@ -47,7 +51,7 @@ export default class EditorPage extends React.Component {
               <p>MistakeDetails(错误详情)</p>
               <a>{mistake.message}</a>
               <p>BestSuggestion（最佳建议）</p>
-              <a>{mistake.replaceValue}</a>
+              <a onClick={this.mistakeReplace}>{mistake.replaceValue}</a>
             </>
           );
           //return<span class="warning-text">{props.children}</span>
@@ -59,8 +63,48 @@ export default class EditorPage extends React.Component {
         }
       },
       {
-        strategy: this.predictionStrategy,
-        component: PredicitonSpan
+        //预测语句装饰器策略函数
+        strategy: (contentBlock, callback, contentState) => {
+          const ContentText = contentBlock.getText();
+          console.log(ContentText);
+          if (ContentText) {
+            let start, lastText;
+            let textList = [];
+            if (this.state.language == "en-US") {
+              textList = ContentText.split(/[，。；‘’“”：]/);
+            } else {
+              textList = ContentText.split(/[，。？！：“”；]/);
+            }
+
+            lastText = textList[textList.length - 1];
+            start = ContentText.indexOf(lastText);
+            console.log("lastText" + lastText);
+            this.state.predictedText = lastText;
+            console.log(cookie.load("contentText"));
+            callback(start, start + lastText.length);
+          }
+        },
+        //预测语句装饰组件
+        component: props => {
+          console.log("props:", props);
+          const Popcontent = (
+            <>
+              <p>Next statement</p>
+              <a onClick={this.mistakeReplace}>本合同为有固定期限劳动合同</a>
+              <br />
+              <a onClick={this.mistakeReplace}>本合同为___期限劳动合同</a>
+              <br />
+              <a onClick={this.mistakeReplace}>
+                甲、乙双方选择___形式确定本合同期限。
+              </a>
+            </>
+          );
+          return (
+            <Popover content={Popcontent} title={this.predictedText}>
+              <span className="warning-text-prediction">{props.children}</span>
+            </Popover>
+          );
+        }
       }
     ]);
     this.state = {
@@ -75,14 +119,19 @@ export default class EditorPage extends React.Component {
       problemList: [], // 拼写检查结果
       prediciton: true, //是否开启下一句预测
       predicitonList: [], //预测语句队列
-      defaultTitle: "" //新建初始标题
+      predictedText: "" //根据此语句预测下一句
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
+    this.predicitonList = [""];
     // 复合装饰器
-
+    this.setState({
+      predicitonList: arr
+    });
     this.onChange = editorState => {
       const contentState = editorState.getCurrentContent();
+      const text = this.getSentenceFromEditor();
+      cookie.save("contentText", text, { path: "/" });
       this.saveContentToLocal(contentState);
       this.setState({
         editorState
@@ -140,7 +189,7 @@ export default class EditorPage extends React.Component {
       //this.props.location.state.template.startsWith("中")
       this.setState({
         language: "zh-CN",
-        note_title: "无标题"
+        note_title: "合同"
       });
     }
   }
@@ -185,6 +234,29 @@ export default class EditorPage extends React.Component {
       });
     }
   };
+
+  //点击替换语句
+  mistakeReplace = event => {
+    console.log("mistakeReplace");
+    const Selected_statement = event.target.innerHTML;
+    console.log(typeof Selected_statement);
+    this.state.predictedText = Selected_statement;
+    const contentstate = this.state.editorState.getCurrentContent();
+    const selectionState = this.state.editorState.getSelection();
+    console.log("selection" + selectionState);
+    //var selectionState = editorState.getSelection();
+    const insertstat = Modifier.insertText(
+      contentstate,
+      selectionState,
+      Selected_statement
+    );
+    const newContent = EditorState.push(
+      this.state.editorState,
+      insertstat,
+      "insert-prediction"
+    );
+    this.onChange(newContent);
+  };
   // 根据 toolMenu 的菜单项 key 触发事件
   handleToolMenuClick = ({ key }) => {
     if (key === "SPELLCHECK") {
@@ -224,6 +296,7 @@ export default class EditorPage extends React.Component {
     );
     if (newState) {
       this.onChange(newState);
+      //cookie.save('contentText',text,{path:"/"});
       return "handled";
     }
     return "not-handled";
@@ -245,11 +318,6 @@ export default class EditorPage extends React.Component {
               console.log(item);
             });
           });
-          languagetool.bestSuggestion(res, function(arr) {
-            arr.forEach(function(item) {
-              console.log(item.bestSuggestion);
-            });
-          });
           let results = [];
           res.matches.map(match => {
             var result = {
@@ -258,7 +326,7 @@ export default class EditorPage extends React.Component {
               type: match.rule.category.name,
               message: match.message,
               shortMessage: match.shortMessage,
-              replaceValue: match.replacements[0].value,
+              replaceValue: match.replaceValue,
               wrongText: match.context.text.slice(
                 match.context.offset,
                 match.context.offset + match.context.length
@@ -277,16 +345,14 @@ export default class EditorPage extends React.Component {
     );
   };
 
-  //预测语句装饰器策略函数
-  predictionStrategy = (contentBlock, callback, contentState) => {
-    if (this.state.predicitonList) {
-    }
+  //触发预测语句功能
+  requestPrediction = () => {
+    const sentences = this.getSentenceFromEditor();
+    console.log("getSentenceFromEditor:", sentences);
   };
 
-  //触发预测语句功能
-  requestPrediction = () => {};
-
   render() {
+    console.log("bwq" + cookie.load("contentText"));
     const exportMenu = (
       <Menu>
         <Menu.Item key="HTML">导出为 HTML</Menu.Item>
@@ -312,10 +378,10 @@ export default class EditorPage extends React.Component {
           {this.state.prediciton ? (
             <>
               <Icon type="check" />
-              <span>智能纠错</span>
+              <span>智能预测</span>
             </>
           ) : (
-            <span>智能纠错</span>
+            <span>智能预测</span>
           )}
         </Menu.Item>
       </Menu>
@@ -361,35 +427,31 @@ export default class EditorPage extends React.Component {
                 onKeyUp={this.handleTitleKeyCommand}
               />
             </div>
+
             <Editor
               ref={this.contentRef}
               editorState={this.state.editorState}
               handleKeyCommand={this.handleKeyCommand}
               onChange={this.onChange}
               spellCheck={true}
-            />
+            >
+              {" "}
+              {}
+            </Editor>
           </div>
         </div>
       </div>
     );
   }
 }
-//预测装饰组件
-const PredicitonSpan = props => {
-  console.log("props", props);
-  return <span class="predicting-text">{props.children}</span>;
-};
 
 function MistakenTextDetail(MisText, problemList) {
   for (let i = 0; i < problemList.length; i++) {
     if (problemList[i].wrongText === MisText) {
-      console.log("llllllll" + problemList[i]);
+      //console.log("llllllll" + problemList[i]);
       return problemList[i];
     }
   }
 }
-const style = {
-  problem: {
-    color: "rgba(123,234,567,0.5)"
-  }
-};
+
+const arr = ["kkk"];

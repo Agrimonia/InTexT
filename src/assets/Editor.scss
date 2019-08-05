@@ -33,10 +33,11 @@
 .DraftEditor-editorContainer {
   margin: 1rem 6rem;
   span {
-    color: #1c1e29;
+    color: #26272c;
     letter-spacing: 0;
-    font-family: Akkurat Std, -apple-system, BlinkMacSystemFont, Segoe UI,
-      Roboto, Oxygen, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
+    font-family: "Microsoft YaHei" Akkurat Std, -apple-system,
+      BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell,
+      Helvetica Neue, sans-serif;
     font-size: 1.125rem;
     line-height: 2rem;
   }
@@ -45,9 +46,7 @@
   //background: url(https://s1.url.cn/tim/docs/static/img/underline-wave-83198c779a.png)
   // left bottom repeat-x;
   padding-bottom: 2px;
-  color: rgba(123, 345, 567, 0.7);
 }
 .warning-text-prediction {
   padding-bottom: 2px;
-  color: ;
 }

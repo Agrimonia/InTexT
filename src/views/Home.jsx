@@ -194,25 +194,7 @@ const options = [
       },
       {
         value: "合同",
-        label: "合同",
-        children: [
-          {
-            value: "买卖合同",
-            label: "买卖合同"
-          },
-          {
-            value: "租赁合同",
-            label: "租赁合同"
-          },
-          {
-            value: "借贷合同",
-            label: "借贷合同"
-          },
-          {
-            value: "技术开发合同",
-            label: "技术开发合同"
-          }
-        ]
+        label: "合同"
       }
     ]
   },

@@ -4,27 +4,37 @@
   justify-content: center;
   align-items: center;
   margin-bottom: 0%;
-  background-color: rgb(245, 245, 217);
+  background: url("../../landing_page/img/bg-callout.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  //background-color: rgb(245, 245, 217);
   height: 100vh;
 }
 
 .login-container {
   margin-top: 5rem;
-  background-color: rgb(245, 245, 217);
+  margin-right: 500px;
+  width: 280px;
+  //background-color: rgb(245, 245, 217);
 }
 .logo {
   margin-top: 14px;
   margin-bottom: 14px;
-  margin-left: 3.5rem;
+  margin-left: 4.1rem;
   height: 9rem;
   color: rgb(7, 7, 7);
   font-variant: petite-caps;
   font-family: auto;
+  font-size: 60px;
 }
 .login-title {
   margin-left: -35px;
   color: rgb(7, 7, 7);
+  font-size: 55px;
 }
 .login-form-button {
-  margin-left: 70px;
+  margin-left: 100px;
+  //background-color: rgb(16, 81, 119);
 }

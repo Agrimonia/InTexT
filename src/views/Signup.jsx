@@ -157,13 +157,13 @@ class Signup extends React.Component {
           {getFieldDecorator("agreement", {
             valuePropName: "checked"
           })(
-            <Checkbox>
+            <Checkbox className="checkbox">
               我已阅读<a href="">用户协议</a>
             </Checkbox>
           )}
         </Form.Item>
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" className="sign-button">
             注册
           </Button>
         </Form.Item>
@@ -179,7 +179,7 @@ const SignupPage = () => {
     <div className="signup-page">
       <div className="signup-container">
         <h1 className="signup-title">
-          <font className="logo">InTexT</font>&nbsp;&nbsp;Sign Up
+          <font className="logo_sign">InTexT</font>
         </h1>
         <SignupForm />
       </div>

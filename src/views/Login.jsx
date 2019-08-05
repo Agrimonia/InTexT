@@ -2,6 +2,7 @@ import React from "react";
 import { Form, Icon, Input, Button, Checkbox } from "antd";
 import { APIClient } from "../utils/client.js";
 import history from "../history";
+//import {Button} from "react-bootstrap";
 import LoginState from "../store/LoginStateStore";
 import "../assets/Login.scss";
 import cookie from "react-cookies";
@@ -67,9 +68,11 @@ class Login extends React.Component {
             type="primary"
             htmlType="submit"
             className="login-form-button"
+            variant="outline-primary"
           >
             登录
           </Button>
+
           {this.state.errored ? (
             <p className="errorInfo">用户名或密码错误！</p>
           ) : null}
@@ -85,7 +88,7 @@ const LoginPage = () => {
     <div className="login-page">
       <div className="login-container">
         <h1 className="login-title">
-          <font className="logo">InTexT</font> Login
+          <font className="logo">InTexT</font>
         </h1>
         <LoginForm />
       </div>
