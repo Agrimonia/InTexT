@@ -64,7 +64,7 @@ export default class Home extends React.Component {
         template: valueStr
       },
       () => {
-        console.log(this.state.template);
+        //console.log(this.state.template);
         cookie.save("template", this.state.template);
       }
     );
