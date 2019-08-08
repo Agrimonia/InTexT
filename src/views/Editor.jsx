@@ -22,6 +22,7 @@ import $ from "jquery";
 import { start } from "repl";
 import { $mobx } from "mobx";
 const languagetool = require("languagetool-api");
+const flag = 0;
 
 export default class EditorPage extends React.Component {
   constructor() {
@@ -32,9 +33,7 @@ export default class EditorPage extends React.Component {
         strategy: (contentBlock, callback, contentState) => {
           const contenttext = contentBlock.getText();
           if (contenttext && this.state.problemList) {
-            //console.log(contenttext)
             this.state.problemList.forEach(problem => {
-              // console.log(problem)
               callback(problem.from, problem.to);
             });
           }
@@ -46,6 +45,7 @@ export default class EditorPage extends React.Component {
             props.decoratedText,
             this.state.problemList
           );
+          console.log(mistake.replaceValue);
           const PopContent = (
             <>
               <p>MistakeDetails(错误详情)</p>
@@ -66,7 +66,7 @@ export default class EditorPage extends React.Component {
         //预测语句装饰器策略函数
         strategy: (contentBlock, callback, contentState) => {
           const ContentText = contentBlock.getText();
-          console.log(ContentText);
+          //console.log(ContentText)
           if (ContentText) {
             let start, lastText;
             let textList = [];
@@ -75,28 +75,59 @@ export default class EditorPage extends React.Component {
             } else {
               textList = ContentText.split(/[，。？！：“”；]/);
             }
+            if (textList.length >= 2) {
+              lastText = textList[textList.length - 2];
+              this.state.lastText_position = textList[textList.length - 1]; //定位在最后一个句子上
+              start = ContentText.indexOf(this.state.lastText_position);
+              //console.log('lastText'+lastText)
+              this.state.predictedText = lastText;
 
-            lastText = textList[textList.length - 1];
-            start = ContentText.indexOf(lastText);
-            console.log("lastText" + lastText);
-            this.state.predictedText = lastText;
-            console.log(cookie.load("contentText"));
-            callback(start, start + lastText.length);
+              APIClient.post("/sentences/send", {
+                qurey_sentence: lastText
+              }).then(response => {
+                //console.log(response.data)
+                //console.log("res"+JSON.parse(JSON.stringify(response)));
+                //const res=JSON.stringify(response.data);
+                //console.log(res);
+                this.state.predicitonList = response.data;
+                //console.log("preList"+this.state.predicitonList)
+                //console.log(typeof(this.state.predicitonList))
+                //console.log(this.state.predicitonList[2])
+              });
+              //console.log(cookie.load('contentText'))
+              callback(start, start + this.state.lastText_position.length);
+            }
+
+            /*fetch("http://localhost:5000/api/sentences/send", {
+                method: 'POST',
+                headers: 'Access-Control-Allow-Origin',
+                body: lastText,
+              }).then((response) => {
+                if (response.ok) {
+                    return response.json();
+                }
+              }).then((json) => {
+                alert(JSON.stringify(json));
+              }).catch((error) => {
+                console.error(error);
+              });*/
           }
         },
         //预测语句装饰组件
         component: props => {
-          console.log("props:", props);
+          //console.log('props:',props)
+          //console.log('dddd'+this.state.predicitonList[0])
           const Popcontent = (
             <>
               <p>Next statement</p>
-              <a onClick={this.mistakeReplace}>本合同为有固定期限劳动合同</a>
-              <br />
-              <a onClick={this.mistakeReplace}>本合同为___期限劳动合同</a>
+              <a onClick={this.mistakeReplace}>
+                {this.state.predicitonList[0]}
+              </a>
               <br />
               <a onClick={this.mistakeReplace}>
-                甲、乙双方选择___形式确定本合同期限。
+                {this.state.predicitonList[1]}
               </a>
+              <br />
             </>
           );
           return (
@@ -107,6 +138,7 @@ export default class EditorPage extends React.Component {
         }
       }
     ]);
+
     this.state = {
       note_title: "无标题", // 文章标题
       template: cookie.load("template"), // 文章模板
@@ -117,9 +149,10 @@ export default class EditorPage extends React.Component {
       language: "zh-CN", // 文章模板语言
       spellCheck: true, // 是否开启拼写检查
       problemList: [], // 拼写检查结果
-      prediciton: true, //是否开启下一句预测
+      prediciton: false, //是否开启下一句预测
       predicitonList: [], //预测语句队列
-      predictedText: "" //根据此语句预测下一句
+      predictedText: "", //根据此语句预测下一句
+      lastText_position: "" //替换区间
     };
     this.titleRef = React.createRef();
     this.contentRef = React.createRef();
@@ -153,8 +186,8 @@ export default class EditorPage extends React.Component {
           template: this.props.location.state.template
         },
         () => {
-          console.log("打开文章", this.state.global_id);
-          console.log("文章类型：", this.state.template);
+          //console.log("打开文章", this.state.global_id);
+          //console.log("文章类型：", this.state.template);
           this.getContentFromLocal();
         }
       );
@@ -166,8 +199,8 @@ export default class EditorPage extends React.Component {
           template: this.state.template
         },
         () => {
-          console.log("初始化新文章", this.state.global_id);
-          console.log("文章类型：", this.state.template);
+          //console.log("初始化新文章", this.state.global_id);
+          //console.log("文章类型：", this.state.template);
           APIClient.post("/note/create", {
             global_id: this.state.global_id,
             template: this.state.template,
@@ -195,7 +228,7 @@ export default class EditorPage extends React.Component {
   }
   // 根据文章 ID 从本地存储拉取文章
   getContentFromLocal = () => {
-    console.log("this.state.global_id:", this.state.global_id);
+    //console.log("this.state.global_id:", this.state.global_id);
     localforage.getItem(this.state.global_id).then(value => {
       this.setState({
         editorState: EditorState.createWithContent(
@@ -211,6 +244,7 @@ export default class EditorPage extends React.Component {
       this.state.global_id,
       JSON.stringify(convertToRaw(content))
     );
+    //console.log(localforage.getItem());
   };
   // 获取文章文本内容
   getSentenceFromEditor = () => {
@@ -219,15 +253,14 @@ export default class EditorPage extends React.Component {
   };
 
   setcompositeDecorator = () => {
-    if (this.state.spellCheck || this.state.prediciton) {
+    if (this.state.spellCheck) {
       this.setState({
         editorState: EditorState.set(this.state.editorState, {
-          decorator: this.compositeDecorator
+          decorator: this.compositeDecorator[0]
         })
       });
     } else {
       this.setState({
-        // 使用 null 删除所有装饰器
         editorState: EditorState.set(this.state.editorState, {
           decorator: null
         })
@@ -237,15 +270,14 @@ export default class EditorPage extends React.Component {
 
   //点击替换语句
   mistakeReplace = event => {
-    console.log("mistakeReplace");
+    //console.log("mistakeReplace");
     const Selected_statement = event.target.innerHTML;
-    console.log(typeof Selected_statement);
+    //console.log(typeof(Selected_statement));
     this.state.predictedText = Selected_statement;
     const contentstate = this.state.editorState.getCurrentContent();
     const selectionState = this.state.editorState.getSelection();
-    console.log("selection" + selectionState);
-    //var selectionState = editorState.getSelection();
-    const insertstat = Modifier.insertText(
+    //console.log(selectionState);
+    const insertstat = Modifier.replaceText(
       contentstate,
       selectionState,
       Selected_statement
@@ -253,7 +285,7 @@ export default class EditorPage extends React.Component {
     const newContent = EditorState.push(
       this.state.editorState,
       insertstat,
-      "insert-prediction"
+      "replace-prediction"
     );
     this.onChange(newContent);
   };
@@ -266,9 +298,12 @@ export default class EditorPage extends React.Component {
       );
     }
     if (key === "PREDICTION") {
-      this.setState({
-        prediciton: !this.state.prediciton
-      });
+      this.setState(
+        {
+          prediciton: !this.state.prediciton
+        },
+        this.setcompositeDecorator
+      );
     }
   };
   // 同步文章标题更改
@@ -305,17 +340,17 @@ export default class EditorPage extends React.Component {
   // 触发拼写检查
   requestSpellCheck = editorState => {
     const sentences = this.getSentenceFromEditor();
-    console.log("getSentenceFromEditor:", sentences);
+    //console.log("getSentenceFromEditor:", sentences);
     languagetool.check(
       { language: this.state.language, text: sentences },
       (err, res) => {
         if (err) {
-          console.log("error from languagetool:", err);
+          //console.log("error from languagetool:", err);
         } else {
           languagetool.showMistakes(res, function(arr) {
-            console.log("response from languagetool:", res);
+            //console.log("response from languagetool:", res);
             arr.forEach(function(item) {
-              console.log(item);
+              //console.log(item);
             });
           });
           let results = [];
@@ -326,16 +361,16 @@ export default class EditorPage extends React.Component {
               type: match.rule.category.name,
               message: match.message,
               shortMessage: match.shortMessage,
-              replaceValue: match.replaceValue,
+              replaceValue: match.replacements[0].value,
               wrongText: match.context.text.slice(
                 match.context.offset,
                 match.context.offset + match.context.length
               )
             };
-            console.log(result);
+            //console.log(","+result);
             results.push(result);
           });
-          console.log("problemList: ", results);
+          //console.log("problemList: ", results);
           this.setState({
             problemList: results
           });
@@ -348,11 +383,11 @@ export default class EditorPage extends React.Component {
   //触发预测语句功能
   requestPrediction = () => {
     const sentences = this.getSentenceFromEditor();
-    console.log("getSentenceFromEditor:", sentences);
+    //console.log("getSentenceFromEditor:",sentences);
   };
 
   render() {
-    console.log("bwq" + cookie.load("contentText"));
+    //console.log("bwq"+cookie.load('contentText'))
     const exportMenu = (
       <Menu>
         <Menu.Item key="HTML">导出为 HTML</Menu.Item>

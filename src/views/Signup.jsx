@@ -29,17 +29,17 @@ class Signup extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log("Received values of form: ", values);
+        //console.log("Received values of form: ", values);
         APIClient.post("/register", values)
           .then(response => {
-            console.log(response);
+            //console.log(response);
             alert("注册成功，请登录");
             history.push("/login");
           })
           .catch(error => {
-            console.log(response);
+            //console.log(response);
             alert("注册失败");
-            console.log("响应失败:", error); //用户名唯一存在问题
+            //console.log("响应失败:", error); //用户名唯一存在问题
           });
       }
     });

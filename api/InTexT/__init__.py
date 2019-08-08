@@ -28,7 +28,9 @@ def load_user(user_id):
 
 import InTexT.user.resources
 import InTexT.note.resources
+import InTexT.algorithm.resources
 
+api.add_resource(InTexT.algorithm.resources.Sentences, '/api/sentences/send')
 api.add_resource(InTexT.user.resources.UserRegistration, '/api/register')
 api.add_resource(InTexT.user.resources.UserLogin, '/api/login')
 api.add_resource(InTexT.user.resources.UserLogout, '/api/logout')
